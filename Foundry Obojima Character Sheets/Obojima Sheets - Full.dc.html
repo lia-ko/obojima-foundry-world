@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Yeseva+One&family=Spectral:ital,wght@0,400;0,500;1,400&family=Spline+Sans+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>*{box-sizing:border-box}body{margin:0}</style>
+</helmet>
+<div style="width:max-content;min-width:100%;min-height:100vh;box-sizing:border-box;padding:48px;background:#e9e3d6;font-family:'Spectral',serif">
+  <div style="max-width:900px;margin-bottom:20px">
+    <div style="font-family:'Spline Sans Mono',monospace;font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:#8a7d63;margin-bottom:10px">Foundry VTT · Obojima 5e · Round 3 — complete tabbed sheets</div>
+    <h1 style="font-family:'Yeseva One',serif;font-size:44px;line-height:1.04;margin:0 0 14px;color:#3a3024;font-weight:400">The whole sheet, four ways</h1>
+    <p style="font-size:15px;line-height:1.7;color:#574c3c;margin:0;max-width:740px;font-family:'Spectral',serif">One full character sheet — every 5e + Obojima section, split across six working tabs (<strong>Play · Spells · Features · Inventory · Potions &amp; Spirit · Bio</strong>) — rendered in four moods. <strong>Click the tabs</strong> on any sheet; toggle Inspiration; drop art onto the portrait and spirit slots. Same character (Pim Hollowillow) throughout, so you're judging the skin, not the stats. Storybook &amp; Sunset are one-token restyles if you want to see them too.</p>
+  </div>
+  <div style="display:flex;gap:48px;align-items:flex-start;padding-top:10px">
+    <div style="flex:none;width:700px">
+      <div style="font-family:'Spline Sans Mono',monospace;font-size:12px;letter-spacing:.1em;color:#8a7d63;margin-bottom:10px">A · FOREST HOLLOW <span style="color:#b0a487">— Totoro emerald</span></div>
+      <dc-import name="Obojima Sheet" feel="forest" style="width:700px;display:block" hint-size="700px,900px"></dc-import>
+    </div>
+    <div style="flex:none;width:700px">
+      <div style="font-family:'Spline Sans Mono',monospace;font-size:12px;letter-spacing:.1em;color:#8a7d63;margin-bottom:10px">B · SKY &amp; MEADOW <span style="color:#b0a487">— turquoise &amp; blossom, airy</span></div>
+      <dc-import name="Obojima Sheet" feel="meadow" style="width:700px;display:block" hint-size="700px,900px"></dc-import>
+    </div>
+    <div style="flex:none;width:700px">
+      <div style="font-family:'Spline Sans Mono',monospace;font-size:12px;letter-spacing:.1em;color:#8a7d63;margin-bottom:10px">D · BATHHOUSE LEDGER <span style="color:#b0a487">— crimson, jade &amp; gold</span></div>
+      <dc-import name="Obojima Sheet" feel="bathhouse" style="width:700px;display:block" hint-size="700px,900px"></dc-import>
+    </div>
+    <div style="flex:none;width:700px">
+      <div style="font-family:'Spline Sans Mono',monospace;font-size:12px;letter-spacing:.1em;color:#8a7d63;margin-bottom:10px">F · EMBER NIGHT <span style="color:#b0a487">— deep teal, candlelit</span></div>
+      <dc-import name="Obojima Sheet" feel="ember" style="width:700px;display:block" hint-size="700px,900px"></dc-import>
+    </div>
+  </div>
+</div>
+</x-dc>
+</body>
+</html>

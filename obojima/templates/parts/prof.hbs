@@ -1,0 +1,20 @@
+<section class="oa-prof-panel">
+  <div class="oa-section-title">Saves &amp; Skills</div>
+  <div class="oa-saves">
+    <span class="oa-saves-label">Saves</span>
+    {{#if saves.length}}{{#each saves}}<b>{{this}}</b>{{#unless @last}} · {{/unless}}{{/each}}{{else}}<span class="oa-muted">none proficient</span>{{/if}}
+  </div>
+  <div class="oa-prof-meta">
+    Prof {{#if editable}}<input type="number" class="oa-inline-num" name="system.attributes.prof" value="{{system.attributes.prof}}">{{else}}{{oa-signed core.prof}}{{/if}}
+    <span class="oa-sep">·</span> Passive Perception {{core.passivePerception}}
+  </div>
+  <div class="oa-skills">
+    {{#each skills}}
+    <div class="oa-skill {{#if this.proficient}}is-prof{{/if}}">
+      <button type="button" class="oa-skill-pip" {{#if ../editable}}data-action="cycleSkillProf" data-key="{{this.key}}"{{/if}}>{{#if this.proficient}}{{#if this.expertise}}◆{{else}}●{{/if}}{{else}}○{{/if}}</button>
+      <button type="button" class="oa-skill-name oa-roll" data-action="roll" data-roll-type="skill" data-key="{{this.key}}">{{this.label}}</button>
+      <b class="oa-skill-mod">{{this.mod}}</b>
+    </div>
+    {{/each}}
+  </div>
+</section>

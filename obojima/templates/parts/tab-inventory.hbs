@@ -1,0 +1,73 @@
+<div class="oa-inv-columns">
+  <div class="oa-inv-col oa-inv-attacks">
+    <div class="oa-col-title">Attacks{{#if extraAttack}} <span class="oa-extra-attack">×2</span>{{/if}}{{#if editable}} <button type="button" class="oa-add" data-action="addRow" data-list="attacks">＋</button>{{/if}}</div>
+    {{#if editable}}
+      <div class="oa-attack-edit">
+        {{#each inventory.attacks}}
+          <div class="oa-attack-edit-row">
+            <input type="text" class="oa-inline-text oa-flex" data-oa-list="attacks" data-oa-index="{{this.index}}" data-oa-prop="name" value="{{this.name}}" placeholder="weapon">
+            <select class="oa-inline-select" data-oa-list="attacks" data-oa-index="{{this.index}}" data-oa-prop="ability" title="Attack ability">
+              <option value="str" {{#if (oa-eq this.ability 'str')}}selected{{/if}}>STR</option>
+              <option value="dex" {{#if (oa-eq this.ability 'dex')}}selected{{/if}}>DEX</option>
+              <option value="best" {{#if (oa-eq this.ability 'best')}}selected{{/if}}>best</option>
+              <option value="none" {{#if (oa-eq this.ability 'none')}}selected{{/if}}>—</option>
+            </select>
+            <label class="oa-prof-check" title="Proficient"><input type="checkbox" data-oa-list="attacks" data-oa-index="{{this.index}}" data-oa-prop="proficient" {{#if this.proficient}}checked{{/if}}>p</label>
+            <input type="text" class="oa-inline-text oa-dmg" data-oa-list="attacks" data-oa-index="{{this.index}}" data-oa-prop="damage" value="{{this.damageDie}}" placeholder="1d8">
+            <span class="oa-hit-preview" title="Computed to-hit">{{this.toHit}}</span>
+            <button type="button" class="oa-remove" data-action="removeRow" data-list="attacks" data-index="{{this.index}}">×</button>
+          </div>
+        {{else}}<div class="oa-empty-inline">No attacks.</div>{{/each}}
+      </div>
+    {{else}}
+      <div class="oa-attack-grid">
+        <div class="oa-attack-head">Weapon</div><div class="oa-attack-head oa-r">Hit</div><div class="oa-attack-head oa-r">Dmg</div>
+        {{#each inventory.attacks}}
+          <button type="button" class="oa-attack-name oa-roll" data-action="roll" data-roll-type="attack" data-index="{{this.index}}">{{this.name}}</button>
+          <div class="oa-r">{{this.toHit}}</div>
+          <div class="oa-r oa-muted">{{this.damage}}</div>
+        {{/each}}
+      </div>
+    {{/if}}
+  </div>
+
+  <div class="oa-inv-col oa-inv-carried">
+    <div class="oa-col-title">Carried{{#if editable}} <button type="button" class="oa-add" data-action="addRow" data-list="gear">＋</button>{{/if}}</div>
+    <div class="oa-carried-list">
+      {{#each inventory.carried}}
+        <div class="oa-carried-row">
+          {{#if ../editable}}
+            <input type="checkbox" class="oa-attune-check" data-oa-list="gear" data-oa-index="{{this.index}}" data-oa-prop="attuned" {{#if this.attuned}}checked{{/if}} title="attuned">
+            <input type="text" class="oa-inline-text oa-flex" data-oa-list="gear" data-oa-index="{{this.index}}" data-oa-prop="name" value="{{this.name}}" placeholder="item">
+            <input type="number" class="oa-inline-num" data-oa-list="gear" data-oa-index="{{this.index}}" data-oa-prop="weight" value="{{this.weight}}">
+            <button type="button" class="oa-remove" data-action="removeRow" data-list="gear" data-index="{{this.index}}">×</button>
+          {{else}}
+            {{this.name}}<span class="oa-carried-wt">{{this.weight}} lb</span>
+          {{/if}}
+        </div>
+      {{else}}<div class="oa-empty-inline">Nothing carried.</div>{{/each}}
+      <div class="oa-carried-total">Carried <b>{{inventory.capacity.value}}</b> / {{inventory.capacity.max}} lb</div>
+    </div>
+  </div>
+
+  <div class="oa-inv-col oa-inv-attune">
+    <div class="oa-col-title">Attuned <span class="oa-attune-count">{{inventory.attunement.used}} / {{inventory.attunement.max}}</span></div>
+    <div class="oa-attune-list">
+      {{#each inventory.attunement.items}}<div class="oa-attune-row">◆ {{this.name}}</div>{{/each}}
+      {{#if (oa-gt inventory.attunement.max inventory.attunement.used)}}<div class="oa-attune-open">◇ open slot</div>{{/if}}
+    </div>
+    <div class="oa-currency">
+      {{#if editable}}
+        <div class="oa-coin"><input type="number" class="oa-coin-input" name="system.currency.pp" value="{{inventory.currency.pp}}"><div class="oa-coin-label">PP</div></div>
+        <div class="oa-coin"><input type="number" class="oa-coin-input" name="system.currency.gp" value="{{inventory.currency.gp}}"><div class="oa-coin-label">GP</div></div>
+        <div class="oa-coin"><input type="number" class="oa-coin-input" name="system.currency.sp" value="{{inventory.currency.sp}}"><div class="oa-coin-label">SP</div></div>
+        <div class="oa-coin"><input type="number" class="oa-coin-input" name="system.currency.cp" value="{{inventory.currency.cp}}"><div class="oa-coin-label">CP</div></div>
+      {{else}}
+        <div class="oa-coin"><div class="oa-coin-val">{{inventory.currency.pp}}</div><div class="oa-coin-label">PP</div></div>
+        <div class="oa-coin"><div class="oa-coin-val">{{inventory.currency.gp}}</div><div class="oa-coin-label">GP</div></div>
+        <div class="oa-coin"><div class="oa-coin-val">{{inventory.currency.sp}}</div><div class="oa-coin-label">SP</div></div>
+        <div class="oa-coin"><div class="oa-coin-val">{{inventory.currency.cp}}</div><div class="oa-coin-label">CP</div></div>
+      {{/if}}
+    </div>
+  </div>
+</div>

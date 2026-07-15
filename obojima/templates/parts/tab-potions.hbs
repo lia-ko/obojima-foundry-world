@@ -1,0 +1,106 @@
+<div class="oa-potion-columns">
+
+  <!-- BREWING -->
+  <div class="oa-brew">
+    <div class="oa-col-title">Larder &amp; Recipes
+      <span class="oa-brew-bonus">brew
+        {{#if editable}}<input type="number" class="oa-inline-num" name="flags.obojima.brewing.bonus" value="{{brewing.bonus}}">
+        {{else}}{{oa-signed brewing.bonus}}{{/if}}
+      </span>
+    </div>
+
+    <div class="oa-subhead">Larder{{#if editable}} <button type="button" class="oa-add" data-action="addIngredient">＋</button>{{/if}}</div>
+    <div class="oa-larder">
+      {{#each brewing.larder}}
+        <div class="oa-larder-row">
+          {{#if ../editable}}
+            <input type="text" class="oa-inline-text" data-oa-list="larder" data-oa-index="{{@index}}" data-oa-prop="name" value="{{this.name}}" placeholder="ingredient…">
+            <input type="number" class="oa-inline-num oa-qty" data-oa-list="larder" data-oa-index="{{@index}}" data-oa-prop="qty" value="{{this.qty}}">
+            <button type="button" class="oa-remove" data-action="removeIngredient" data-index="{{@index}}">×</button>
+          {{else}}
+            <span>{{this.name}}</span><span class="oa-muted">×{{this.qty}}</span>
+          {{/if}}
+        </div>
+      {{else}}
+        <div class="oa-empty-inline">No ingredients gathered.</div>
+      {{/each}}
+    </div>
+
+    <div class="oa-subhead">Recipes{{#if editable}} <button type="button" class="oa-add" data-action="addRecipe">＋</button>{{/if}}</div>
+    <div class="oa-recipes">
+      {{#each brewing.recipes}}
+        <div class="oa-recipe-row rarity-{{this.rarity}}">
+          {{#if ../editable}}
+            <input type="text" class="oa-inline-text" data-oa-list="recipes" data-oa-index="{{@index}}" data-oa-prop="name" value="{{this.name}}" placeholder="recipe…">
+            <select class="oa-inline-select" data-oa-list="recipes" data-oa-index="{{@index}}" data-oa-prop="rarity">
+              {{#each ../rarities}}<option value="{{this}}" {{#if (oa-eq this ../rarity)}}selected{{/if}}>{{this}}</option>{{/each}}
+            </select>
+            <label class="oa-dc-label">DC <input type="number" class="oa-inline-num" data-oa-list="recipes" data-oa-index="{{@index}}" data-oa-prop="dc" value="{{this.dc}}"></label>
+            <button type="button" class="oa-brew-btn" data-action="brew" data-index="{{@index}}">Brew</button>
+            <button type="button" class="oa-remove" data-action="removeRecipe" data-index="{{@index}}">×</button>
+          {{else}}
+            <button type="button" class="oa-brew-btn oa-roll" data-action="brew" data-index="{{@index}}"><b>{{this.name}}</b></button>
+            <span class="oa-muted">{{this.rarity}} · DC {{this.dc}}</span>
+          {{/if}}
+        </div>
+      {{else}}
+        <div class="oa-empty-inline">No recipes learned.</div>
+      {{/each}}
+    </div>
+  </div>
+
+  <!-- SPIRIT -->
+  <div class="oa-spirit">
+    {{#if hasSpirit}}
+    <div class="oa-spirit-card">
+      <div class="oa-spirit-head">
+        <img class="oa-spirit-img" src="{{spirit.img}}" alt="{{spirit.name}}" {{#if editable}}data-action="spiritImage"{{/if}}>
+        <div class="oa-spirit-id">
+          {{#if editable}}
+            <input type="text" class="oa-inline-text oa-spirit-name" data-oa-list="spirit" data-oa-prop="name" value="{{spirit.name}}">
+            <input type="text" class="oa-inline-text oa-spirit-type" data-oa-list="spirit" data-oa-prop="type" value="{{spirit.type}}" placeholder="type…">
+          {{else}}
+            <div class="oa-spirit-name">{{spirit.name}}</div>
+            <div class="oa-spirit-type">{{spirit.type}}{{#if spirit.bonded}} · bonded{{/if}}</div>
+          {{/if}}
+        </div>
+      </div>
+
+      <div class="oa-spirit-stats">
+        {{#if editable}}
+          <label>AC <input type="number" class="oa-inline-num" data-oa-list="spirit" data-oa-prop="ac" value="{{spirit.ac}}"></label>
+          <label>HP <input type="number" class="oa-inline-num" data-oa-list="spirit" data-oa-prop="hp.value" value="{{spirit.hp.value}}">/<input type="number" class="oa-inline-num" data-oa-list="spirit" data-oa-prop="hp.max" value="{{spirit.hp.max}}"></label>
+          <label>Spd <input type="number" class="oa-inline-num" data-oa-list="spirit" data-oa-prop="speed" value="{{spirit.speed}}"></label>
+          <label>Fly <input type="number" class="oa-inline-num" data-oa-list="spirit" data-oa-prop="fly" value="{{spirit.fly}}"></label>
+        {{else}}
+          <span>AC {{spirit.ac}}</span> · <span>HP {{spirit.hp.value}}/{{spirit.hp.max}}</span> · <span>Speed {{spirit.speed}}</span>{{#if spirit.fly}} · <span>Fly {{spirit.fly}}</span>{{/if}}
+        {{/if}}
+      </div>
+
+      <div class="oa-subhead">Abilities{{#if editable}} <button type="button" class="oa-add" data-action="addAbility">＋</button>{{/if}}</div>
+      <div class="oa-spirit-abilities">
+        {{#each spirit.abilities}}
+          <div class="oa-spirit-ability">
+            {{#if ../editable}}
+              <input type="text" class="oa-inline-text" data-oa-list="abilities" data-oa-index="{{@index}}" data-oa-prop="name" value="{{this.name}}" placeholder="name">
+              <input type="text" class="oa-inline-text oa-flex" data-oa-list="abilities" data-oa-index="{{@index}}" data-oa-prop="effect" value="{{this.effect}}" placeholder="effect">
+              <button type="button" class="oa-remove" data-action="removeAbility" data-index="{{@index}}">×</button>
+            {{else}}
+              <button type="button" class="oa-roll oa-spirit-ability-btn" data-action="spiritAbility" data-index="{{@index}}"><b>{{this.name}}</b> <span class="oa-muted">{{this.effect}}</span></button>
+            {{/if}}
+          </div>
+        {{/each}}
+      </div>
+
+      {{#if editable}}
+        <label class="oa-spirit-quirk-edit">Quirk <input type="text" class="oa-inline-text" data-oa-list="spirit" data-oa-prop="quirk" value="{{spirit.quirk}}"></label>
+      {{else}}{{#if spirit.quirk}}<div class="oa-spirit-quirk">{{spirit.quirk}}</div>{{/if}}{{/if}}
+    </div>
+    {{else}}
+      <div class="oa-spirit-empty">
+        <p>No bonded spirit yet.</p>
+        {{#if editable}}<button type="button" class="oa-add-spirit" data-action="addSpirit">＋ Add Spirit Companion</button>{{/if}}
+      </div>
+    {{/if}}
+  </div>
+</div>

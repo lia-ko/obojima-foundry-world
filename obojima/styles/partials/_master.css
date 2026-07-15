@@ -1,0 +1,75 @@
+/* Band (top strip): identity, vitals, abilities — and the Saves & Skills panel */
+
+/* Identity */
+.obojima .oa-band-avatar {
+  width: 60px; height: 60px; flex: none; object-fit: cover; border-radius: 12px;
+  border: 2px solid #fff; box-shadow: 0 4px 10px rgba(0,0,0,.14);
+}
+.obojima .oa-band-avatar[data-action] { cursor: pointer; }
+.obojima .oa-band-id { flex: none; width: 156px; }
+.obojima .oa-band-name { font-family: var(--oa-hand); font-size: 20px; color: #214a52; line-height: 1.05; width: 100%; }
+.obojima .oa-band-sub { font-family: var(--oa-serif); font-style: italic; font-size: 10.5px; color: var(--oa-muted); }
+.obojima .oa-band-cls { font-size: 10.5px; color: var(--oa-muted); margin-top: 1px; display: flex; align-items: center; gap: 4px; flex-wrap: wrap; }
+.obojima .oa-band-cls b { color: var(--oa-ink); }
+.obojima .oa-cls-in { width: 80px; }
+.obojima .oa-cls-sel { max-width: 148px; font-size: 11px; border-bottom: 1px solid var(--oa-softln); margin: 1px 0; }
+.obojima .oa-lv-badge { font-weight: 700; }
+.obojima .oa-levelup-btn {
+  display: inline-flex; align-items: center; gap: 5px; margin-top: 6px;
+  background: #edc25c; color: #3c3414; border: 1px solid #dcab3e;
+  border-radius: 9px; padding: 5px 12px; font-weight: 800; font-size: 11px;
+}
+.obojima .oa-build-cta {
+  background: var(--oa-accent); color: #fff; border-color: var(--oa-accent);
+  box-shadow: 0 2px 10px rgba(196,135,15,.45); font-size: 12px; padding: 7px 14px;
+}
+.obojima .oa-levelup-btn[disabled] { opacity: .5; cursor: default; box-shadow: none; }
+.obojima .oa-build-hint { font-size: 9.5px; color: var(--oa-muted); margin-top: 4px; max-width: 168px; line-height: 1.35; }
+.obojima .oa-mini-btn { display: inline-block; margin-top: 6px; font-size: 10px; font-weight: 700; color: var(--oa-muted); background: var(--oa-soft); border: 1px solid var(--oa-softln); border-radius: 999px; padding: 3px 10px; }
+
+/* Vitals */
+.obojima .oa-vitals { display: flex; gap: 6px; flex: none; }
+.obojima .oa-stat { width: 54px; text-align: center; background: var(--oa-soft); border-radius: 9px; padding: 6px 0; }
+.obojima .oa-stat-hp { background: #fbe6da; width: 66px; }
+.obojima .oa-stat-label { font-size: 8px; color: var(--oa-muted); letter-spacing: .05em; }
+.obojima .oa-stat-val { font-weight: 800; font-size: 16px; color: var(--oa-ink); }
+.obojima .oa-stat-hp .oa-stat-val { color: var(--oa-hp); }
+.obojima .oa-stat-sub { font-size: 9px; }
+
+.obojima .oa-band-divider { width: 1px; align-self: stretch; background: var(--oa-panelln); margin: 2px 2px; }
+
+/* Abilities row */
+.obojima .oa-abil-row { display: flex; gap: 4px; flex: 1; justify-content: flex-end; }
+.obojima .oa-ability { width: 46px; flex: none; text-align: center; border: 1px solid var(--oa-panelln); border-radius: 8px; padding: 5px 0; }
+.obojima .oa-ability.is-prof { border-color: var(--oa-softln); background: var(--oa-soft); }
+.obojima .oa-ability-key { font-size: 8px; color: var(--oa-muted); display: flex; align-items: center; justify-content: center; gap: 2px; }
+.obojima .oa-ability.is-prof .oa-ability-key { color: var(--oa-accent); }
+.obojima .oa-ability-mod { font-weight: 800; font-size: 15px; display: block; width: 100%; text-align: center; }
+.obojima .oa-ability-score { font-size: 8px; color: var(--oa-muted); }
+
+/* Saves & Skills panel */
+.obojima .oa-section-title {
+  font-family: var(--oa-hand); font-size: 17px; color: var(--oa-accent); margin-bottom: 4px;
+}
+.obojima .oa-saves { font-size: 11px; color: var(--oa-ink); margin-bottom: 3px; }
+.obojima .oa-saves-label { font-weight: 700; color: var(--oa-muted); margin-right: 4px; }
+.obojima .oa-saves b { color: var(--oa-accent); }
+.obojima .oa-prof-meta { font-size: 10px; color: var(--oa-muted); margin-bottom: 10px; border-bottom: 1px solid var(--oa-panelln); padding-bottom: 8px; }
+.obojima .oa-prof-meta .oa-sep { opacity: .5; margin: 0 3px; }
+.obojima .oa-skills { display: grid; grid-template-columns: 1fr 1fr; gap: 2px 14px; font-size: 10.5px; line-height: 1.5; }
+.obojima .oa-skill { display: flex; align-items: baseline; gap: 5px; }
+.obojima .oa-skill.is-prof { color: var(--oa-accent); }
+.obojima .oa-skill-pip { flex: none; color: var(--oa-muted); }
+.obojima .oa-skill.is-prof .oa-skill-pip { color: var(--oa-accent); }
+.obojima .oa-skill-name { flex: 1; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.obojima .oa-skill-mod { flex: none; font-weight: 600; margin-left: auto; }
+
+/* Bio details grid (moved off the band) */
+.obojima .oa-details-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 6px 12px; margin-bottom: 12px; }
+.obojima .oa-details-grid label { font-size: 10px; color: var(--oa-muted); display: flex; flex-direction: column; gap: 1px; }
+
+/* Ancestry / background creation rows */
+.obojima .oa-create-rows { display: flex; flex-direction: column; gap: 6px; margin-bottom: 10px; }
+.obojima .oa-create-row { display: flex; align-items: center; gap: 8px; }
+.obojima .oa-create-label { font-size: 11px; font-weight: 700; color: var(--oa-muted); width: 78px; flex: none; }
+.obojima .oa-create-row .oa-inline-select { flex: 1; max-width: none; }

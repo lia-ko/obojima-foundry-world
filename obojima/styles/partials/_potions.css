@@ -1,0 +1,53 @@
+/* Potions & Spirit tab + Bio */
+
+.obojima .oa-potion-columns { display: flex; gap: 12px; align-items: flex-start; flex-wrap: wrap; }
+.obojima .oa-brew { flex: 1.05; min-width: 240px; }
+.obojima .oa-spirit { flex: 1; min-width: 220px; }
+.obojima .oa-brew-bonus { font-family: var(--oa-font); font-size: 11px; color: var(--oa-muted); margin-left: 6px; }
+.obojima .oa-subhead { font-size: 9px; letter-spacing: .09em; color: var(--oa-muted); font-weight: 800; margin: 10px 0 6px; text-transform: uppercase; display: flex; align-items: center; gap: 6px; }
+.obojima .oa-add { color: var(--oa-accent); font-weight: 800; font-size: 13px; }
+.obojima .oa-remove { color: var(--oa-hp); font-weight: 800; margin-left: auto; padding: 0 4px; }
+
+.obojima .oa-larder-row, .obojima .oa-recipe-row {
+  display: flex; align-items: center; gap: 6px; font-size: 12px; padding: 3px 0;
+  border-bottom: 1px dotted var(--oa-panelln);
+}
+.obojima .oa-recipe-row.rarity-rare .oa-brew-btn b,
+.obojima .oa-recipe-row.rarity-very { color: var(--oa-accent); }
+.obojima .oa-dc-label { font-size: 10px; color: var(--oa-muted); display: inline-flex; align-items: center; gap: 3px; }
+.obojima .oa-brew-btn { background: var(--oa-soft); border-radius: 8px; padding: 3px 10px; font-weight: 700; font-size: 12px; }
+
+/* Spirit card */
+.obojima .oa-spirit-card { background: var(--oa-soft); border: 1px solid var(--oa-softln); border-radius: 12px; padding: 11px 13px; }
+.obojima .oa-spirit-head { display: flex; gap: 10px; align-items: center; margin-bottom: 8px; }
+.obojima .oa-spirit-img { width: 54px; height: 54px; flex: none; border-radius: 10px; border: 2px solid #fff; object-fit: cover; }
+.obojima .oa-spirit-name { font-weight: 800; font-size: 18px; color: var(--oa-ink); line-height: 1; }
+.obojima .oa-spirit-type { font-size: 11px; color: var(--oa-muted); }
+.obojima .oa-spirit-stats { font-size: 11.5px; margin-bottom: 6px; display: flex; flex-wrap: wrap; gap: 4px 8px; align-items: center; }
+.obojima .oa-spirit-stats label { display: inline-flex; align-items: center; gap: 3px; }
+.obojima .oa-spirit-ability { display: flex; align-items: center; gap: 6px; font-size: 11.5px; line-height: 1.5; padding: 1px 0; }
+.obojima .oa-spirit-ability-btn b { color: var(--oa-ink); }
+.obojima .oa-spirit-quirk { font-size: 11px; color: var(--oa-muted); font-style: italic; margin-top: 6px; }
+.obojima .oa-spirit-quirk-edit { display: block; font-size: 10px; color: var(--oa-muted); margin-top: 6px; }
+.obojima .oa-spirit-empty { text-align: center; color: var(--oa-muted); padding: 18px 0; }
+.obojima .oa-add-spirit, .obojima .oa-add-spirit:hover {
+  display: inline-block; margin-top: 8px; background: var(--oa-accent); color: var(--oa-onaccent);
+  border-radius: 10px; padding: 8px 14px; font-weight: 800; font-size: 12px;
+}
+
+/* Brew chat result */
+.oa-brew-result { font-weight: 700; margin: 4px 0 0; }
+.oa-success { color: #2c8a4a; }
+.oa-fail { color: #c25b3a; }
+
+/* Bio */
+.obojima .oa-bio-cards { display: flex; gap: 9px; margin-bottom: 10px; }
+.obojima .oa-bio-card { flex: 1; border: 1px solid var(--oa-panelln); border-radius: 10px; padding: 8px 12px; font-size: 11.5px; }
+.obojima .oa-bio-label { font-family: var(--oa-hand); font-size: 16px; color: var(--oa-accent); }
+.obojima .oa-bio-card input { width: 100%; }
+.obojima .oa-bio-body { font-family: var(--oa-serif); font-size: 13px; color: var(--oa-ink); line-height: 1.7; }
+.obojima .oa-prof-block { margin: 4px 0 12px; font-size: 12px; line-height: 1.6; }
+.obojima .oa-prof-block .oa-section-title { margin-bottom: 3px; }
+.obojima .oa-prof-block b { color: var(--oa-ink); }
+.obojima .oa-prof-row { display: flex; align-items: center; gap: 8px; font-size: 11px; color: var(--oa-muted); margin: 1px 0; }
+.obojima .oa-prof-row .oa-inline-text { flex: 1; }

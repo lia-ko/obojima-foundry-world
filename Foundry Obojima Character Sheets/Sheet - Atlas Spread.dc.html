@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Architects+Daughter&family=Spectral:ital,wght@0,400;1,400&family=Shantell+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="./image-slot.js"></script>
+<style>
+  *{box-sizing:border-box}
+  .roll{transition:transform .14s ease, filter .14s ease}
+  .roll:hover{transform:translateY(-1px);filter:brightness(1.04);cursor:pointer}
+</style>
+</helmet>
+<div onClick="{{ onClick }}" style="--ink:#244b3b;--muted:#2c3f35;--panel:#ffffff;--panelln:#dfe9dd;--accent:#c4870f;--onaccent:#2c3f1d;--soft:#eef4e4;--softln:#cfe0bb;--hp:#c25b3a;width:100%;border-radius:16px;overflow:hidden;position:relative;box-shadow:0 22px 50px rgba(35,70,55,.32);background:linear-gradient(180deg,rgba(44,142,198,.12),rgba(151,196,104,.14)),url('./meadow-sky.png') center 38%/cover no-repeat,linear-gradient(180deg,#2c8ec6 0%,#5fb2d6 26%,#cfeaef 50%,#c6e0a2 74%,#97c468 100%);font-family:'Shantell Sans',sans-serif;color:var(--ink)">
+  <div style="min-height:46px;background:rgba(31,72,58,.5);display:flex;align-items:center;padding:6px 14px;gap:10px;position:relative">
+    <div style="font-family:'Spectral',serif;font-style:italic;font-size:14px;color:#fbfdff;flex:none;text-shadow:0 1px 2px rgba(0,0,0,.2)">Pim Hollowillow · Atlas</div>
+    <div style="flex:1;min-width:0;display:flex;align-items:center;gap:6px;flex-wrap:wrap">
+      <sc-if value="{{ concOn }}" hint-placeholder-val="{{ true }}">
+        <div onClick="{{ toggleConc }}" class="roll" style="display:inline-flex;align-items:center;gap:5px;background:rgba(255,255,255,.94);border-radius:999px;padding:3px 10px;font-size:11px;font-weight:800;color:#244b3b;cursor:pointer"><span style="width:7px;height:7px;border-radius:50%;background:#c4870f;flex:none"></span>Conc · {{ concSpell }}</div>
+      </sc-if>
+      <sc-for list="{{ chips }}" as="chip" hint-placeholder-count="2">
+        <div onClick="{{ chip.onClick }}" class="roll" style="display:inline-flex;align-items:center;gap:5px;background:rgba(255,255,255,.94);border-radius:999px;padding:3px 7px 3px 9px;font-size:11px;font-weight:700;color:#244b3b;cursor:pointer"><span style="{{ chip.dotStyle }}"></span>{{ chip.label }}<span style="color:#a9bcb0;font-size:13px;margin-left:1px;line-height:1">×</span></div>
+      </sc-for>
+    </div>
+    <div onClick="{{ togglePop }}" class="roll" style="flex:none;display:inline-flex;align-items:center;gap:4px;background:rgba(255,255,255,.2);border:1px solid rgba(255,255,255,.45);border-radius:999px;padding:4px 11px;font-size:11px;font-weight:800;color:#fbfdff;cursor:pointer">＋ Status</div>
+    <sc-if value="{{ pop }}" hint-placeholder-val="{{ false }}">
+      <div style="position:absolute;top:50px;right:12px;z-index:60;width:316px;background:#fff;border-radius:14px;box-shadow:0 20px 44px rgba(20,40,30,.32);border:1px solid #dfe9dd;padding:14px 15px;font-family:'Shantell Sans',sans-serif">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:11px">
+          <div style="font-family:'Architects Daughter',cursive;font-weight:700;font-size:18px;color:#c4870f;-webkit-text-stroke:.4px #c4870f">Statuses</div>
+          <div onClick="{{ togglePop }}" class="roll" style="font-size:11.5px;color:#2c3f35;cursor:pointer;font-weight:800;background:var(--soft);border-radius:999px;padding:3px 12px">Done</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:9px;margin-bottom:14px">
+          <div onClick="{{ toggleConc }}" class="roll" style="{{ concStyle }}">Concentration</div>
+          <input value="{{ concSpell }}" onChange="{{ setConc }}" placeholder="spell…" style="flex:1;min-width:0;border:none;border-bottom:1.5px solid #cfe0bb;background:transparent;font-family:inherit;font-size:12.5px;color:#244b3b;font-weight:700;outline:none;padding:2px 0">
+        </div>
+        <div style="font-size:9px;letter-spacing:.09em;color:#2c3f35;font-weight:800;margin-bottom:7px">CONDITIONS</div>
+        <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px">
+          <sc-for list="{{ condChips }}" as="c" hint-placeholder-count="8"><div onClick="{{ c.onClick }}" class="roll" style="{{ c.style }}">{{ c.label }}</div></sc-for>
+        </div>
+        <div style="font-size:9px;letter-spacing:.09em;color:#2c3f35;font-weight:800;margin-bottom:7px">BUFFS &amp; NOTES</div>
+        <div style="display:flex;flex-wrap:wrap;gap:6px">
+          <sc-for list="{{ buffChips }}" as="c" hint-placeholder-count="4"><div onClick="{{ c.onClick }}" class="roll" style="{{ c.style }}">{{ c.label }}</div></sc-for>
+        </div>
+      </div>
+    </sc-if>
+  </div>
+  <div style="display:flex;gap:14px;padding:16px;align-items:stretch">
+    <!-- MASTER (persistent core) -->
+    <div style="flex:none;width:300px;background:rgba(255,255,255,.92);border:1px solid rgba(255,255,255,.8);border-radius:16px;padding:15px;box-shadow:0 8px 24px rgba(40,80,90,.16)">
+      <div style="text-align:center">
+        <image-slot id="atlas-portrait" style="width:100%;height:156px;border-radius:14px;border:3px solid #fff;box-shadow:0 6px 18px rgba(0,0,0,.16);display:block" shape="rounded" radius="14" placeholder="portrait"></image-slot>
+        <div style="font-family:'Architects Daughter',cursive;font-weight:700;font-size:23px;color:#214a52;line-height:1.08;margin-top:8px;-webkit-text-stroke:0.6px #214a52">Pim Hollowillow</div>
+        <div style="font-family:'Spectral',serif;font-style:italic;font-size:11.5px;color:var(--muted)">Tall-Grass Folk · she/her · Neutral Good</div>
+      </div>
+      <div style="font-family:'Architects Daughter',cursive;font-size:18px;color:var(--accent);border-top:1px solid var(--panelln);padding-top:7px;margin-top:11px;margin-bottom:2px">Class</div>
+      <div style="font-size:11.5px;line-height:1.72;color:var(--ink)">
+        <div>Class <b style="float:right;font-weight:600">Witch · {{ level }}</b></div>
+        <div>Subclass <b style="float:right;font-weight:600">Tideheart Coven</b></div>
+        <div>Hit Dice <b style="float:right;font-weight:600">{{ level }}d6</b></div>
+      </div>
+      <div onClick="{{ openLv }}" class="roll" style="display:flex;align-items:center;justify-content:center;gap:6px;margin-top:9px;background:#edc25c;color:#3c3414;border:1px solid #dcab3e;border-radius:10px;padding:8px 0;font-weight:800;font-size:12px;letter-spacing:.02em;cursor:pointer;font-family:ui-sans-serif,system-ui,'Helvetica Neue',Arial,sans-serif">⤴ Level Up</div>
+      <div style="display:flex;gap:6px;margin:12px 0">
+        <div class="roll" style="flex:1;text-align:center;background:var(--soft);border-radius:10px;padding:7px 0"><div style="font-size:8.5px;color:var(--muted);letter-spacing:.06em">AC</div><div style="font-family:'Shantell Sans',sans-serif;font-weight:800;font-size:18px;color:var(--ink)">14</div></div>
+        <div class="roll" style="flex:1;text-align:center;background:#fbe6da;border-radius:10px;padding:7px 0"><div style="font-size:8.5px;color:#b35a3a;letter-spacing:.06em">HP</div><div style="font-family:'Shantell Sans',sans-serif;font-weight:800;font-size:18px;color:var(--hp)">{{ hpCur }}<span style="font-size:10px">/{{ hpMax }}</span></div></div>
+        <div class="roll" style="flex:1;text-align:center;background:var(--soft);border-radius:10px;padding:7px 0"><div style="font-size:8.5px;color:var(--muted);letter-spacing:.06em">INIT</div><div style="font-family:'Shantell Sans',sans-serif;font-weight:800;font-size:18px;color:var(--ink)">+3</div></div>
+        <div class="roll" style="flex:1;text-align:center;background:var(--soft);border-radius:10px;padding:7px 0"><div style="font-size:8.5px;color:var(--muted);letter-spacing:.06em">SPD</div><div style="font-family:'Shantell Sans',sans-serif;font-weight:800;font-size:18px;color:var(--ink)">30</div></div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-bottom:12px">
+        <div class="roll" style="text-align:center;border:1px solid var(--panelln);border-radius:10px;padding:6px 0"><div style="font-size:9px;color:var(--muted)">STR</div><div style="font-family:'Shantell Sans',sans-serif;font-weight:800;font-size:16px">−1</div></div>
+        <div class="roll" style="text-align:center;border:1px solid var(--panelln);border-radius:10px;padding:6px 0"><div style="font-size:9px;color:var(--muted)">DEX</div><div style="font-family:'Shantell Sans',sans-serif;font-weight:800;font-size:16px">+3</div></div>
+        <div class="roll" style="text-align:center;border:1px solid var(--panelln);border-radius:10px;padding:6px 0"><div style="font-size:9px;color:var(--muted)">CON</div><div style="font-family:'Shantell Sans',sans-serif;font-weight:800;font-size:16px">+1</div></div>
+        <div class="roll" style="text-align:center;border:1px solid var(--panelln);border-radius:10px;padding:6px 0"><div style="font-size:9px;color:var(--muted)">INT</div><div style="font-family:'Shantell Sans',sans-serif;font-weight:800;font-size:16px">+1</div></div>
+        <div class="roll" style="text-align:center;border:1px solid var(--softln);background:var(--soft);border-radius:10px;padding:6px 0"><div style="font-size:9px;color:var(--accent)">WIS</div><div style="font-family:'Shantell Sans',sans-serif;font-weight:800;font-size:16px">+3</div></div>
+        <div class="roll" style="text-align:center;border:1px solid var(--panelln);border-radius:10px;padding:6px 0"><div style="font-size:9px;color:var(--muted)">CHA</div><div style="font-family:'Shantell Sans',sans-serif;font-weight:800;font-size:16px">+2</div></div>
+      </div>
+      <div style="font-size:11px;color:var(--muted);margin-bottom:4px">Saves · <b style="color:var(--accent)">WIS +6</b> · <b style="color:var(--accent)">INT +4</b> · Prof +3 · PP 16</div>
+      <div style="font-family:'Architects Daughter',cursive;font-size:18px;color:var(--accent);border-top:1px solid var(--panelln);padding-top:7px;margin-bottom:3px">Skills</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:0 16px;font-size:11.5px;line-height:1.72">
+        <div>○ Acrobatics <b style="float:right;font-weight:600">+3</b></div>
+        <div>○ Animal H. <b style="float:right;font-weight:600">+3</b></div>
+        <div style="color:var(--accent)">● Arcana <b style="float:right">+4</b></div>
+        <div>○ Athletics <b style="float:right;font-weight:600">−1</b></div>
+        <div>○ Deception <b style="float:right;font-weight:600">+2</b></div>
+        <div>○ History <b style="float:right;font-weight:600">+1</b></div>
+        <div>○ Insight <b style="float:right;font-weight:600">+3</b></div>
+        <div>○ Intimid. <b style="float:right;font-weight:600">+2</b></div>
+        <div>○ Investig. <b style="float:right;font-weight:600">+1</b></div>
+        <div style="color:var(--accent)">● Medicine <b style="float:right">+6</b></div>
+        <div style="color:var(--accent)">● Nature <b style="float:right">+4</b></div>
+        <div style="color:var(--accent)">● Perception <b style="float:right">+6</b></div>
+        <div>○ Perform. <b style="float:right;font-weight:600">+2</b></div>
+        <div>○ Persuasion <b style="float:right;font-weight:600">+2</b></div>
+        <div>○ Religion <b style="float:right;font-weight:600">+1</b></div>
+        <div style="color:var(--accent)">● Sleight <b style="float:right">+6</b></div>
+        <div>○ Stealth <b style="float:right;font-weight:600">+3</b></div>
+        <div style="color:var(--accent)">● Survival <b style="float:right">+6</b></div>
+      </div>
+    </div>
+    <!-- DETAIL -->
+    <div style="flex:1;min-width:0;background:rgba(255,255,255,.92);border:1px solid rgba(255,255,255,.8);border-radius:16px;padding:15px;box-shadow:0 8px 24px rgba(40,80,90,.16)">
+      <div style="display:flex;gap:5px;flex-wrap:wrap;border-bottom:1px solid var(--panelln);padding-bottom:11px;margin-bottom:13px">
+        <div data-tab="spells" style="{{ sSpells }}">Spells</div>
+        <div data-tab="features" style="{{ sFeatures }}">Features</div>
+        <div data-tab="inventory" style="{{ sInv }}">Inventory</div>
+        <div data-tab="potions" style="{{ sPotions }}">Potions &amp; Spirit</div>
+        <div data-tab="bio" style="{{ sBio }}">Bio</div>
+      </div>
+      <!-- SPELLS -->
+      <div style="{{ pSpells }}">
+        <div style="display:flex;gap:7px;margin-bottom:12px">
+          <div style="flex:1;text-align:center;background:var(--soft);border-radius:11px;padding:8px 0"><div style="font-size:9px;letter-spacing:.06em;color:var(--accent)">SAVE DC</div><div style="font-family:'Shantell Sans',sans-serif;font-weight:800;font-size:20px;color:var(--ink)">14</div></div>
+          <div style="flex:1;text-align:center;background:var(--soft);border-radius:11px;padding:8px 0"><div style="font-size:9px;letter-spacing:.06em;color:var(--accent)">SPELL ATK</div><div style="font-family:'Shantell Sans',sans-serif;font-weight:800;font-size:20px;color:var(--ink)">+6</div></div>
+          <div style="flex:1;text-align:center;background:var(--soft);border-radius:11px;padding:8px 0"><div style="font-size:9px;letter-spacing:.06em;color:var(--accent)">ABILITY</div><div style="font-family:'Shantell Sans',sans-serif;font-weight:800;font-size:20px;color:var(--ink)">WIS</div></div>
+          <div style="flex:1;text-align:center;background:var(--soft);border-radius:11px;padding:8px 0"><div style="font-size:9px;letter-spacing:.06em;color:var(--accent)">PREPARED</div><div style="font-family:'Shantell Sans',sans-serif;font-weight:800;font-size:20px;color:var(--ink)">9</div></div>
+        </div>
+        <div style="font-size:13px;color:var(--ink);line-height:1.5">
+          <div style="display:grid;grid-template-columns:62px 64px 1fr;gap:7px 12px">
+            <div style="font-size:9px;color:var(--muted);padding-top:2px">LEVEL</div><div style="font-size:9px;color:var(--muted)">SLOTS</div><div style="font-size:9px;color:var(--muted)">SPELLS (● prepared · C conc · R ritual)</div>
+            <div style="font-family:'Architects Daughter',cursive;font-size:18px;color:var(--accent)">Cantrips</div><div style="color:var(--muted)">∞</div><div class="roll">Druidcraft · Guidance · Saltspray · Prestidigitation</div>
+            <div style="font-family:'Architects Daughter',cursive;font-size:18px;color:var(--accent)">1st</div><div style="color:var(--accent)">●●●●</div><div>● Cure Wounds · ● Faerie Fire <span style="color:var(--muted)">C</span> · ● Goodberry · Detect Magic <span style="color:var(--muted)">R</span></div>
+            <div style="font-family:'Architects Daughter',cursive;font-size:18px;color:var(--accent)">2nd</div><div style="color:var(--accent)">●●<span style="color:var(--muted)">○</span></div><div>● Lesser Restoration · ● Moonbeam <span style="color:var(--muted)">C</span> · Misty Step</div>
+            <div style="font-family:'Architects Daughter',cursive;font-size:18px;color:var(--accent)">3rd</div><div style="color:var(--accent)">●●</div><div>● Tidal Wall <span style="color:var(--muted)">C</span> · Sleet Storm <span style="color:var(--muted)">C</span></div>
+          </div>
+        </div>
+      </div>
+      <!-- FEATURES -->
+      <div style="{{ pFeatures }}">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+          <div style="border:1px solid var(--panelln);border-radius:12px;padding:10px 13px"><div style="display:flex;justify-content:space-between;align-items:center"><b style="font-size:13px;color:var(--ink)">Tideheart</b><span style="display:inline-flex;gap:3px"><i style="width:8px;height:8px;border-radius:50%;background:var(--accent)"></i><i style="width:8px;height:8px;border-radius:50%;background:var(--accent)"></i><i style="width:8px;height:8px;border-radius:50%;border:1.5px solid var(--accent)"></i></span></div><div style="font-size:11.5px;color:var(--muted);line-height:1.5;margin-top:3px">Reaction: ally at 0 HP within 30 ft → restore 1d8+WIS. 3/long rest.</div></div>
+          <div style="border:1px solid var(--panelln);border-radius:12px;padding:10px 13px"><b style="font-size:13px;color:var(--ink)">Tall-Grass Folk</b><div style="font-size:11.5px;color:var(--muted);line-height:1.5;margin-top:3px">Folk Resilience · Keen Senses · Speak with Small Beasts.</div></div>
+          <div style="border:1px solid var(--panelln);border-radius:12px;padding:10px 13px"><b style="font-size:13px;color:var(--ink)">Brew Mastery</b><div style="font-size:11.5px;color:var(--muted);line-height:1.5;margin-top:3px">Craft potions on a short rest; add prof. twice to brew checks.</div></div>
+          <div style="border:1px solid var(--panelln);border-radius:12px;padding:10px 13px"><b style="font-size:13px;color:var(--ink)">Potion Peddler <span style="font-size:10px;color:var(--muted)">· bg</span></b><div style="font-size:11.5px;color:var(--muted);line-height:1.5;margin-top:3px">Word on the Road: a buyer, a bed, and a rumour anywhere.</div></div>
+          <div style="border:1px solid var(--panelln);border-radius:12px;padding:10px 13px"><b style="font-size:13px;color:var(--ink)">Witch's Knack · Spirit Bond</b><div style="font-size:11.5px;color:var(--muted);line-height:1.5;margin-top:3px">Mochi aids your magic; cantrips scale.</div></div>
+          <div style="background:var(--soft);border:1px solid var(--softln);border-radius:12px;padding:10px 13px"><b style="font-size:13px;color:var(--ink)">Feat · Spirit-Touched</b><div style="font-size:11.5px;color:var(--muted);line-height:1.5;margin-top:3px">1/long rest: cast Misty Step without a slot.</div></div>
+          <sc-for list="{{ gains }}" as="g" hint-placeholder-count="0"><div style="border:1px solid var(--accent);background:var(--soft);border-radius:12px;padding:10px 13px"><div style="display:flex;justify-content:space-between;align-items:center"><b style="font-size:13px;color:var(--ink)">{{ g.title }}</b><span style="font-size:8.5px;color:#fff;background:var(--accent);font-weight:800;letter-spacing:.05em;border-radius:999px;padding:2px 7px">NEW</span></div><div style="font-size:11.5px;color:var(--muted);line-height:1.5;margin-top:3px">{{ g.desc }}</div></div></sc-for>
+        </div>
+      </div>
+      <!-- INVENTORY -->
+      <div style="{{ pInv }}">
+        <div style="display:flex;gap:14px">
+          <div style="flex:1.25">
+            <div style="font-family:'Architects Daughter',cursive;font-size:19px;color:var(--accent);margin-bottom:4px">Attacks</div>
+            <div style="display:grid;grid-template-columns:1fr auto auto;gap:4px 12px;font-size:12px;line-height:1.45;color:var(--ink)">
+              <div style="font-size:8.5px;color:var(--muted);letter-spacing:.05em">WEAPON</div><div style="font-size:8.5px;color:var(--muted);text-align:right">HIT</div><div style="font-size:8.5px;color:var(--muted);text-align:right">DMG</div>
+              <div>Brambwood Staff</div><div style="text-align:right;font-weight:600">+3</div><div style="text-align:right;color:var(--muted)">1d6+1</div>
+              <div>Tide Sickle</div><div style="text-align:right;font-weight:600;color:var(--accent)">+6</div><div style="text-align:right;color:var(--muted)">1d4+3</div>
+              <div>Saltspray <span style="font-size:9px;color:var(--muted)">cantrip</span></div><div style="text-align:right;font-weight:600;color:var(--accent)">+6</div><div style="text-align:right;color:var(--muted)">1d8</div>
+            </div>
+          </div>
+          <div style="flex:1.1">
+            <div style="font-family:'Architects Daughter',cursive;font-size:19px;color:var(--accent);margin-bottom:4px">Carried</div>
+            <div style="font-size:12px;color:var(--ink);line-height:1.85">
+              <div style="border-bottom:1px dotted var(--panelln)">Brambwood Staff <span style="float:right;color:var(--muted)">4 lb</span></div>
+              <div style="border-bottom:1px dotted var(--panelln)">Tide Sickle <span style="float:right;color:var(--muted)">2 lb</span></div>
+              <div style="border-bottom:1px dotted var(--panelln)">Travel Cloak <span style="float:right;color:var(--muted)">4 lb</span></div>
+              <div style="border-bottom:1px dotted var(--panelln)">Herbalism + Alchemist's <span style="float:right;color:var(--muted)">11 lb</span></div>
+              <div style="border-bottom:1px dotted var(--panelln)">Bottles ×8 · bedroll <span style="float:right;color:var(--muted)">11 lb</span></div>
+              <div style="color:var(--muted);font-size:11px;margin-top:4px">Carried <b style="color:var(--ink)">32</b> / 120 lb</div>
+            </div>
+          </div>
+          <div style="flex:1">
+            <div style="font-family:'Architects Daughter',cursive;font-size:19px;color:var(--accent);margin-bottom:4px">Attuned <span style="font-family:'Shantell Sans';font-size:11px;color:var(--muted)">2 / 3</span></div>
+            <div style="font-size:12px;color:var(--ink);line-height:1.7">
+              <div>◆ Brambwood Staff <span style="color:var(--muted)">+1, regrows</span></div>
+              <div>◆ Mistveil Charm <span style="color:var(--muted)">adv. vs charm</span></div>
+              <div style="color:var(--muted);font-style:italic">◇ open slot</div>
+            </div>
+            <div style="display:flex;gap:5px;text-align:center;margin-top:9px">
+              <div style="flex:1;background:var(--soft);border-radius:7px;padding:5px 0"><div style="font-family:'Shantell Sans',sans-serif;font-weight:800;font-size:14px">1</div><div style="font-size:8px;color:var(--muted)">PP</div></div>
+              <div style="flex:1;background:var(--soft);border-radius:7px;padding:5px 0"><div style="font-family:'Shantell Sans',sans-serif;font-weight:800;font-size:14px">12</div><div style="font-size:8px;color:var(--muted)">GP</div></div>
+              <div style="flex:1;background:var(--soft);border-radius:7px;padding:5px 0"><div style="font-family:'Shantell Sans',sans-serif;font-weight:800;font-size:14px">3</div><div style="font-size:8px;color:var(--muted)">SP</div></div>
+              <div style="flex:1;background:var(--soft);border-radius:7px;padding:5px 0"><div style="font-family:'Shantell Sans',sans-serif;font-weight:800;font-size:14px">40</div><div style="font-size:8px;color:var(--muted)">CP</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- POTIONS & SPIRIT -->
+      <div style="{{ pPotions }}">
+        <div style="display:flex;gap:12px">
+          <div style="flex:1.05">
+            <div style="font-family:'Architects Daughter',cursive;font-size:19px;color:var(--accent);margin-bottom:3px">Larder &amp; Recipes <span style="font-family:'Shantell Sans';font-size:10px;color:var(--muted)">brew +9</span></div>
+            <div style="font-size:11.5px;color:var(--muted);margin-bottom:5px">Glimmercap ×3 · River Salt ×2 · Moon-Moth Wing ×4</div>
+            <div style="font-size:12px;color:var(--ink);line-height:1.55">
+              <div class="roll" style="border-bottom:1px dotted var(--panelln)"><b>Mistveil Draught</b> <span style="float:right;color:var(--muted)">DC 12</span></div>
+              <div class="roll" style="border-bottom:1px dotted var(--panelln)"><b>Tall-Grass Tonic</b> <span style="float:right;color:var(--muted)">DC 12</span></div>
+              <div class="roll"><b style="color:var(--accent)">Ember Bottle</b> <span style="float:right;color:var(--muted)">DC 15</span></div>
+            </div>
+          </div>
+          <div style="flex:1;background:var(--soft);border:1px solid var(--softln);border-radius:12px;padding:11px 13px">
+            <div style="display:flex;gap:10px;align-items:center;margin-bottom:8px">
+              <image-slot id="atlas-spirit" style="width:54px;height:54px;flex:none;border-radius:10px;border:2px solid #fff" shape="rounded" radius="10" placeholder="spirit"></image-slot>
+              <div><div style="font-family:'Shantell Sans',sans-serif;font-weight:800;font-size:18px;color:var(--ink);line-height:1">Mochi</div><div style="font-size:11px;color:var(--muted)">grass-spirit · bonded</div></div>
+            </div>
+            <div style="font-size:11.5px;color:var(--ink);margin-bottom:6px">AC 13 · HP 8 · Speed 25 · Fly 10</div>
+            <div style="font-size:11.5px;line-height:1.5"><b>Gust</b> <span style="color:var(--muted)">push 10ft, 1/day</span> · <b>Hush</b> · <b>Find the Path</b></div>
+          </div>
+        </div>
+      </div>
+      <!-- BIO -->
+      <div style="{{ pBio }}">
+        <div style="display:flex;gap:9px;margin-bottom:10px">
+          <div style="flex:1;border:1px solid var(--panelln);border-radius:10px;padding:8px 12px"><span style="font-family:'Architects Daughter',cursive;font-size:16px;color:var(--accent)">Ideal</span><div style="font-size:11.5px;color:var(--ink);line-height:1.45">A remedy freely given beats coin.</div></div>
+          <div style="flex:1;border:1px solid var(--panelln);border-radius:10px;padding:8px 12px"><span style="font-family:'Architects Daughter',cursive;font-size:16px;color:var(--accent)">Bond</span><div style="font-size:11.5px;color:var(--ink);line-height:1.45">The reef that raised her.</div></div>
+          <div style="flex:1;border:1px solid var(--panelln);border-radius:10px;padding:8px 12px"><span style="font-family:'Architects Daughter',cursive;font-size:16px;color:var(--accent)">Flaw</span><div style="font-size:11.5px;color:var(--ink);line-height:1.45">Never refuses a dare.</div></div>
+        </div>
+        <div style="font-family:'Spectral',serif;font-size:13px;color:var(--ink);line-height:1.7">Pim learned her brewing from a tide-witch on the southern reefs, trading tonics for stories. She wanders the tall grass with Mochi at her shoulder, mapping spirit-paths and bottling weather. <span style="color:var(--muted)">Allies: the Mistveil festival-keepers · the ferryman at Reed Crossing.</span></div>
+      </div>
+      <!--DETAILS--></div>
+  </div>
+  <sc-if value="{{ lvOpen }}" hint-placeholder-val="{{ false }}">
+    <div style="position:absolute;inset:0;z-index:80;background:rgba(20,40,30,.42);display:flex;align-items:center;justify-content:center;padding:24px;font-family:'Shantell Sans',sans-serif">
+      <div style="width:432px;max-width:100%;background:#fff;border-radius:18px;box-shadow:0 30px 70px rgba(20,40,30,.42);overflow:hidden">
+        <div style="background:linear-gradient(180deg,#2c8ec6,#5fb2d6);padding:15px 20px;color:#fff">
+          <div style="font-family:'Architects Daughter',cursive;font-weight:700;font-size:25px;-webkit-text-stroke:.5px #fff;line-height:1">Level Up</div>
+          <div style="font-size:12.5px;opacity:.95;margin-top:3px">Witch · {{ level }} → {{ nextLevel }} · Tideheart Coven</div>
+        </div>
+        <div style="padding:18px 20px">
+          <div style="font-size:9px;letter-spacing:.09em;color:#2c3f35;font-weight:800;margin-bottom:8px">HIT POINTS</div>
+          <div style="display:flex;gap:8px;margin-bottom:7px">
+            <div onClick="{{ pickAvg }}" class="roll" style="{{ avgStyle }}">Take average · +5</div>
+            <div onClick="{{ pickRoll }}" class="roll" style="{{ rollStyle }}">Roll d6 · +{{ rollGain }}</div>
+          </div>
+          <div style="font-size:11.5px;color:var(--muted);margin-bottom:16px">Max HP <b style="color:var(--ink)">{{ hpMax }}</b> → <b style="color:#c4870f">{{ hpMaxNext }}</b> <span style="opacity:.7">(+CON)</span></div>
+          <div style="font-size:9px;letter-spacing:.09em;color:#2c3f35;font-weight:800;margin-bottom:8px">YOU GAIN</div>
+          <div style="border:1px solid var(--softln);background:var(--soft);border-radius:12px;padding:11px 13px;margin-bottom:9px"><b style="font-size:13px;color:var(--ink)">{{ featTitle }}</b><div style="font-size:11.5px;color:var(--muted);line-height:1.5;margin-top:3px">{{ featDesc }}</div></div>
+          <div style="font-size:11.5px;color:var(--ink);line-height:1.6;margin-bottom:17px">＋ A new 3rd-level spell slot · prepare one additional spell.</div>
+          <div style="display:flex;gap:9px">
+            <div onClick="{{ closeLv }}" class="roll" style="flex:1;text-align:center;border:1px solid var(--panelln);border-radius:10px;padding:10px 0;font-weight:700;font-size:13px;color:#2c3f35;cursor:pointer">Cancel</div>
+            <div onClick="{{ applyLv }}" class="roll" style="flex:1.5;text-align:center;background:var(--accent);color:var(--onaccent);border-radius:10px;padding:10px 0;font-weight:800;font-size:13px;cursor:pointer">Gain Level {{ nextLevel }}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:760,&quot;height&quot;:560}}">
+class Component extends DCLogic {
+  state = {
+    detail: 'spells', pop: false, concOn: true, concSpell: 'Moonbeam',
+    level: 5, hpCur: 32, hpMax: 38, lvOpen: false, lvMethod: 'avg', lvRoll: 4, gains: [],
+    conds: { Poisoned:false, Frightened:false, Prone:false, Restrained:false, Grappled:false, Blinded:false, Charmed:false, Stunned:false, Incapacitated:false, Invisible:false, Deafened:false, Paralyzed:false },
+    buffs: { Blessed:true, Hex:false, Hidden:false, Hasted:false, Guided:false }
+  };
+  go(t) { this.setState({ detail: t }); }
+  onClick = (e) => { const t = e.target.closest('[data-tab]'); if (t) this.go(t.dataset.tab); };
+  togglePop = () => this.setState(s => ({ pop: !s.pop }));
+  toggleConc = () => this.setState(s => ({ concOn: !s.concOn }));
+  setConc = (e) => this.setState({ concSpell: e.target.value });
+  toggleCond = (k) => this.setState(s => ({ conds: { ...s.conds, [k]: !s.conds[k] } }));
+  toggleBuff = (k) => this.setState(s => ({ buffs: { ...s.buffs, [k]: !s.buffs[k] } }));
+  openLv = () => this.setState({ lvOpen: true });
+  closeLv = () => this.setState({ lvOpen: false });
+  pickAvg = () => this.setState({ lvMethod: 'avg' });
+  pickRoll = () => this.setState({ lvMethod: 'roll', lvRoll: Math.floor(Math.random() * 6) + 1 });
+  lvFeature(lvl) {
+    const t = {
+      6: { title: "Tide's Embrace", desc: 'When you restore an ally\u2019s hit points, they also gain temporary HP equal to your WIS modifier (+3).' },
+      7: { title: 'Brewmaster\u2019s Cache', desc: 'Keep one extra prepared potion that never spoils between long rests.' },
+      8: { title: 'Ability Score Improvement', desc: 'Raise one ability score by 2, or two by 1 \u2014 or take a feat.' },
+      9: { title: 'Deep Current', desc: 'Once per long rest, turn a failed WIS save into a success.' }
+    };
+    return t[lvl] || { title: 'New Witch Feature', desc: 'A fresh boon of the coven awaits at this level.' };
+  }
+  applyLv = () => this.setState(s => {
+    const nl = s.level + 1;
+    const gain = s.lvMethod === 'avg' ? 5 : (s.lvRoll + 1);
+    return { level: nl, hpMax: s.hpMax + gain, hpCur: s.hpCur + gain, lvOpen: false, gains: [...s.gains, this.lvFeature(nl)] };
+  });
+  renderVals() {
+    const d = this.state.detail;
+    const pan = x => ({ display: d === x ? '' : 'none' });
+    const seg = on => ({ padding:'7px 13px', borderRadius:'999px', cursor:'pointer', fontSize:'12px', fontWeight: on?800:600, background: on?'#edc25c':'transparent', color: on?'#3c3414':'var(--muted)', whiteSpace:'nowrap', transition:'all .15s' });
+    const dot = c => ({ width:'7px', height:'7px', borderRadius:'50%', background:c, flex:'none' });
+    const pill = (on,tone) => ({ display:'inline-flex', alignItems:'center', gap:'5px', borderRadius:'999px', padding:'4px 11px', fontSize:'11px', fontWeight:700, cursor:'pointer', border:'1px solid '+(on?tone:'#dfe9dd'), background:on?tone:'#fff', color:on?'#fff':'#2c3f35', transition:'all .12s' });
+    const chips = [];
+    Object.keys(this.state.conds).forEach(k => { if (this.state.conds[k]) chips.push({ key:'c-'+k, label:k, dotStyle:dot('#c25b3a'), onClick:() => this.toggleCond(k) }); });
+    Object.keys(this.state.buffs).forEach(k => { if (this.state.buffs[k]) chips.push({ key:'b-'+k, label:k, dotStyle:dot('#c4870f'), onClick:() => this.toggleBuff(k) }); });
+    const condChips = Object.keys(this.state.conds).map(k => ({ key:k, label:k, style:pill(this.state.conds[k],'#c25b3a'), onClick:() => this.toggleCond(k) }));
+    const buffChips = Object.keys(this.state.buffs).map(k => ({ key:k, label:k, style:pill(this.state.buffs[k],'#c4870f'), onClick:() => this.toggleBuff(k) }));
+    const nextLevel = this.state.level + 1;
+    const gain = this.state.lvMethod === 'avg' ? 5 : (this.state.lvRoll + 1);
+    const lvPill = on => ({ flex:1, textAlign:'center', borderRadius:'10px', padding:'9px 0', fontSize:'12px', fontWeight:800, cursor:'pointer', border:'1px solid '+(on?'#c4870f':'#dfe9dd'), background:on?'#c4870f':'#fff', color:on?'#2c3f1d':'#2c3f35', transition:'all .12s' });
+    const feat = this.lvFeature(nextLevel);
+    return {
+      onClick: this.onClick, togglePop:this.togglePop, toggleConc:this.toggleConc, setConc:this.setConc,
+      level:this.state.level, hpCur:this.state.hpCur, hpMax:this.state.hpMax,
+      lvOpen:this.state.lvOpen, openLv:this.openLv, closeLv:this.closeLv, applyLv:this.applyLv, pickAvg:this.pickAvg, pickRoll:this.pickRoll,
+      nextLevel, hpMaxNext:this.state.hpMax+gain, rollGain:this.state.lvRoll+1,
+      avgStyle:lvPill(this.state.lvMethod==='avg'), rollStyle:lvPill(this.state.lvMethod==='roll'),
+      featTitle:feat.title, featDesc:feat.desc, gains:this.state.gains,
+      pop:this.state.pop, concOn:this.state.concOn, concSpell:this.state.concSpell,
+      concStyle:pill(this.state.concOn,'#c4870f'), chips, condChips, buffChips,
+      pSpells:pan('spells'), pFeatures:pan('features'), pInv:pan('inventory'), pPotions:pan('potions'), pBio:pan('bio'),
+      sSpells:seg(d==='spells'), sFeatures:seg(d==='features'), sInv:seg(d==='inventory'), sPotions:seg(d==='potions'), sBio:seg(d==='bio')
+    };
+  }
+}
+</script>
+</body>
+</html>

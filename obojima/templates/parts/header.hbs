@@ -1,0 +1,44 @@
+<header class="oa-header">
+  <div class="oa-header-title">{{identity.name}}</div>
+
+  <div class="oa-header-chips">
+    {{#if concentration.active}}
+      <button type="button" class="oa-chip oa-chip-conc" data-action="toggleConcentration" data-tooltip="End concentration">
+        <span class="oa-dot oa-dot-accent"></span>Conc{{#if concentration.name}} · {{concentration.name}}{{/if}}<span class="oa-chip-x">×</span>
+      </button>
+    {{/if}}
+    {{#each status.activeChips}}
+      <button type="button" class="oa-chip" data-action="toggleCondition" data-condition-id="{{this.id}}" data-tooltip="Remove {{this.label}}">
+        <span class="oa-dot oa-dot-hp"></span>{{this.label}}<span class="oa-chip-x">×</span>
+      </button>
+    {{/each}}
+  </div>
+
+  {{#if canEdit}}
+    <button type="button" class="oa-rest-btn" data-action="shortRest" title="Short rest">Short</button>
+    <button type="button" class="oa-rest-btn" data-action="longRest" title="Long rest">Long Rest</button>
+    <button type="button" class="oa-edit-btn {{#if editMode}}is-on{{/if}}" data-action="toggleEdit">{{#if editMode}}Done{{else}}Edit{{/if}}</button>
+  {{/if}}
+  <button type="button" class="oa-status-btn" data-action="togglePopover">＋ Status</button>
+
+  {{#if popoverOpen}}
+  <div class="oa-popover">
+    <div class="oa-popover-head">
+      <div class="oa-popover-title">Statuses</div>
+      <button type="button" class="oa-pill oa-pill-done" data-action="togglePopover">Done</button>
+    </div>
+
+    <div class="oa-conc-row">
+      <button type="button" class="oa-cond {{#if concentration.active}}is-active{{/if}}" data-action="toggleConcentration">Concentration</button>
+      <input type="text" class="oa-inline-text oa-flex" name="system.concentration.spell" value="{{concentration.name}}" placeholder="spell…">
+    </div>
+
+    <div class="oa-popover-section-label">Conditions</div>
+    <div class="oa-popover-grid">
+      {{#each status.conditions}}
+        <button type="button" class="oa-cond {{#if this.active}}is-active{{/if}}" data-action="toggleCondition" data-condition-id="{{this.id}}">{{this.label}}</button>
+      {{/each}}
+    </div>
+  </div>
+  {{/if}}
+</header>

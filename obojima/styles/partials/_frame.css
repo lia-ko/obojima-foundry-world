@@ -1,0 +1,77 @@
+/* Frame: root, header bar, status popover, two-column layout */
+
+.obojima .oa-root { display: flex; flex-direction: column; min-height: 100%; }
+
+/* Header */
+.obojima .oa-header {
+  min-height: 46px; display: flex; align-items: center; gap: 10px;
+  padding: 6px 14px; background: rgba(31,72,58,.5); position: relative;
+}
+.obojima .oa-header-title {
+  font-family: var(--oa-serif); font-style: italic; font-size: 14px;
+  color: #fbfdff; flex: none; text-shadow: 0 1px 2px rgba(0,0,0,.2);
+}
+.obojima .oa-header-chips {
+  flex: 1; min-width: 0; display: flex; align-items: center; gap: 6px; flex-wrap: wrap;
+}
+.obojima .oa-chip {
+  display: inline-flex; align-items: center; gap: 5px; background: rgba(255,255,255,.94);
+  border-radius: 999px; padding: 3px 8px 3px 9px; font-size: 11px; font-weight: 700; color: #244b3b;
+}
+.obojima .oa-chip-conc { font-weight: 800; }
+.obojima .oa-chip-x { color: #a9bcb0; font-size: 13px; margin-left: 1px; line-height: 1; }
+.obojima .oa-dot { width: 7px; height: 7px; border-radius: 50%; flex: none; }
+.obojima .oa-dot-accent { background: var(--oa-accent); }
+.obojima .oa-dot-hp { background: var(--oa-hp); }
+.obojima .oa-status-btn {
+  flex: none; display: inline-flex; align-items: center; gap: 4px;
+  background: rgba(255,255,255,.2); border: 1px solid rgba(255,255,255,.45);
+  border-radius: 999px; padding: 4px 11px; font-size: 11px; font-weight: 800; color: #fbfdff;
+}
+.obojima .oa-edit-btn {
+  flex: none; background: rgba(255,255,255,.2); border: 1px solid rgba(255,255,255,.45);
+  border-radius: 999px; padding: 4px 13px; font-size: 11px; font-weight: 800; color: #fbfdff;
+}
+.obojima .oa-edit-btn.is-on { background: var(--oa-accent); border-color: var(--oa-accent); color: #fff; }
+.obojima .oa-rest-btn {
+  flex: none; background: rgba(255,255,255,.18); border: 1px solid rgba(255,255,255,.4);
+  border-radius: 999px; padding: 4px 10px; font-size: 10.5px; font-weight: 800; color: #fbfdff;
+}
+
+/* Status popover */
+.obojima .oa-popover {
+  position: absolute; top: 50px; right: 12px; z-index: 60; width: 316px;
+  background: #fff; border-radius: 14px; box-shadow: 0 20px 44px rgba(20,40,30,.32);
+  border: 1px solid var(--oa-panelln); padding: 14px 15px;
+}
+.obojima .oa-popover-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 11px; }
+.obojima .oa-popover-title {
+  font-family: var(--oa-hand); font-weight: 700; font-size: 18px; color: var(--oa-accent);
+  -webkit-text-stroke: .4px var(--oa-accent);
+}
+.obojima .oa-pill-done { font-size: 11.5px; color: var(--oa-muted); font-weight: 800; background: var(--oa-soft); border-radius: 999px; padding: 3px 12px; }
+.obojima .oa-popover-section-label { font-size: 9px; letter-spacing: .09em; color: var(--oa-muted); font-weight: 800; margin-bottom: 7px; }
+.obojima .oa-popover-grid { display: flex; flex-wrap: wrap; gap: 6px; }
+.obojima .oa-cond {
+  border-radius: 999px; padding: 4px 11px; font-size: 11px; font-weight: 700;
+  border: 1px solid var(--oa-panelln); background: #fff; color: var(--oa-muted);
+}
+.obojima .oa-cond.is-active { background: var(--oa-hp); border-color: var(--oa-hp); color: #fff; }
+
+/* Dashboard layout: top band, then a Saves&Skills panel beside the tabbed detail */
+.obojima .oa-wrap { display: flex; flex-direction: column; gap: 10px; padding: 12px; flex: 1; min-height: 0; }
+.obojima .oa-lower { display: flex; gap: 10px; flex: 1; min-height: 0; }
+
+.obojima .oa-card,
+.obojima .oa-band,
+.obojima .oa-prof-panel,
+.obojima .oa-detail {
+  background: rgba(255,255,255,.92); border: 1px solid rgba(255,255,255,.8);
+  border-radius: 14px; box-shadow: 0 8px 24px rgba(40,80,90,.16);
+}
+.obojima .oa-band { display: flex; align-items: center; gap: 12px; padding: 10px 12px; }
+.obojima .oa-prof-panel { width: 340px; flex: none; padding: 11px 14px; overflow: auto; }
+.obojima .oa-detail { flex: 1; min-width: 0; padding: 13px; display: flex; flex-direction: column; }
+.obojima .oa-detail-body { flex: 1; min-height: 0; overflow: auto; }
+
+.obojima .oa-empty, .obojima .oa-empty-inline { color: var(--oa-muted); font-style: italic; font-size: 12px; padding: 6px 0; }

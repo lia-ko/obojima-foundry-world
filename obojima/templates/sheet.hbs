@@ -1,0 +1,12 @@
+{{#with oa}}
+<div class="oa-root {{#unless editable}}oa-locked{{/unless}}">
+  {{> "systems/obojima/templates/parts/header.hbs"}}
+  <div class="oa-wrap">
+    {{> "systems/obojima/templates/parts/band.hbs"}}
+    <div class="oa-lower">
+      {{> "systems/obojima/templates/parts/prof.hbs"}}
+      {{> "systems/obojima/templates/parts/detail.hbs"}}
+    </div>
+  </div>
+</div>
+{{/with}}

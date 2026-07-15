@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Yeseva+One&family=Spectral:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Caveat:wght@500;600;700&family=Mulish:wght@400;500;600;700&family=Spline+Sans+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="./image-slot.js"></script>
+<style>
+  *{box-sizing:border-box}
+  .roll{transition:filter .14s ease}
+  .roll:hover{filter:brightness(1.05);cursor:pointer}
+</style>
+</helmet>
+<div style="--ink:#3f3622;--muted:#9a8a62;--panel:#fffaef;--panelln:#d8c9a0;--accent:#3f5d40;--soft:#eef3df;--softln:#bcd09a;--hp:#9a4f38;width:100%;border-radius:14px;overflow:hidden;box-shadow:0 22px 50px rgba(25,45,30,.3);background:#f3ead0;font-family:'Spectral',serif;color:var(--ink)">
+  <!-- painted masthead -->
+  <div style="position:relative;background:radial-gradient(ellipse 70% 80% at 80% 30%,rgba(196,214,128,.45),transparent 60%),linear-gradient(160deg,#356046,#244534 70%);padding:20px 26px 22px;overflow:hidden">
+    <div style="position:absolute;left:12%;top:30%;width:7px;height:7px;border-radius:50%;background:#f1d873;box-shadow:0 0 7px #f1d873"></div>
+    <div style="position:absolute;right:30%;top:60%;width:6px;height:6px;border-radius:50%;background:#fff4d6"></div>
+    <div style="display:flex;align-items:center;gap:20px">
+      <image-slot id="journal-portrait" style="width:96px;height:112px;flex:none;border:4px solid #fbf7e6;box-shadow:0 8px 20px rgba(0,0,0,.35);transform:rotate(-3deg)" shape="rounded" radius="3" placeholder="portrait"></image-slot>
+      <div style="flex:1">
+        <div style="font-family:'Spline Sans Mono',monospace;font-size:10px;letter-spacing:.2em;color:#cfe0b8;text-transform:uppercase">Field Ledger of</div>
+        <div style="font-family:'Yeseva One',serif;font-size:38px;color:#fbf7e6;line-height:1.02;text-shadow:0 2px 10px rgba(0,0,0,.4)">Pim Hollowillow</div>
+        <div style="font-family:'Spectral',serif;font-style:italic;font-size:14px;color:#d6e3bf;margin-top:4px">Tideheart Witch · Level 5 · Tall-Grass Folk · Potion Peddler</div>
+      </div>
+    </div>
+    <div style="display:flex;gap:8px;margin-top:16px;flex-wrap:wrap">
+      <span class="roll" style="background:rgba(251,247,230,.92);border-radius:8px;padding:6px 12px;font-family:'Mulish';font-size:12px;color:#2f4530">Armor <b>14</b></span>
+      <span class="roll" style="background:rgba(251,247,230,.92);border-radius:8px;padding:6px 12px;font-family:'Mulish';font-size:12px;color:#7a3320">HP <b>32 / 38</b></span>
+      <span class="roll" style="background:rgba(251,247,230,.92);border-radius:8px;padding:6px 12px;font-family:'Mulish';font-size:12px;color:#2f4530">Init <b>+3</b></span>
+      <span class="roll" style="background:rgba(251,247,230,.92);border-radius:8px;padding:6px 12px;font-family:'Mulish';font-size:12px;color:#2f4530">Speed <b>30</b></span>
+      <span class="roll" style="background:rgba(251,247,230,.92);border-radius:8px;padding:6px 12px;font-family:'Mulish';font-size:12px;color:#2f4530">Prof <b>+3</b></span>
+      <span style="background:rgba(251,247,230,.92);border-radius:8px;padding:6px 12px;font-family:'Mulish';font-size:12px;color:#2f4530">Passive Perc. <b>16</b></span>
+      <span style="background:rgba(251,247,230,.92);border-radius:8px;padding:6px 12px;font-family:'Mulish';font-size:12px;color:#2f4530">Hit Dice <b>5d8</b></span>
+    </div>
+  </div>
+  <!-- journal body -->
+  <div style="padding:8px 26px 26px">
+    <!-- abilities + saves -->
+    <div style="display:flex;align-items:center;gap:12px;margin:18px 0 10px"><div style="font-family:'Caveat',cursive;font-size:25px;color:var(--accent)">Aptitudes</div><div style="flex:1;height:1px;background:var(--panelln)"></div></div>
+    <div style="display:flex;gap:18px">
+      <div style="flex:1;display:flex;gap:7px">
+        <div class="roll" style="flex:1;text-align:center;border:1px solid var(--panelln);border-radius:10px;background:var(--panel);padding:7px 0"><div style="font-family:'Mulish';font-size:9.5px;color:var(--muted)">STR</div><div style="font-family:'Yeseva One',serif;font-size:18px">−1</div><div style="font-family:'Mulish';font-size:10px;color:var(--muted)">8</div></div>
+        <div class="roll" style="flex:1;text-align:center;border:1px solid var(--panelln);border-radius:10px;background:var(--panel);padding:7px 0"><div style="font-family:'Mulish';font-size:9.5px;color:var(--muted)">DEX</div><div style="font-family:'Yeseva One',serif;font-size:18px">+3</div><div style="font-family:'Mulish';font-size:10px;color:var(--muted)">16</div></div>
+        <div class="roll" style="flex:1;text-align:center;border:1px solid var(--panelln);border-radius:10px;background:var(--panel);padding:7px 0"><div style="font-family:'Mulish';font-size:9.5px;color:var(--muted)">CON</div><div style="font-family:'Yeseva One',serif;font-size:18px">+1</div><div style="font-family:'Mulish';font-size:10px;color:var(--muted)">13</div></div>
+        <div class="roll" style="flex:1;text-align:center;border:1px solid var(--panelln);border-radius:10px;background:var(--panel);padding:7px 0"><div style="font-family:'Mulish';font-size:9.5px;color:var(--muted)">INT</div><div style="font-family:'Yeseva One',serif;font-size:18px">+1</div><div style="font-family:'Mulish';font-size:10px;color:var(--muted)">12</div></div>
+        <div class="roll" style="flex:1;text-align:center;border:1px solid var(--softln);border-radius:10px;background:var(--soft);padding:7px 0"><div style="font-family:'Mulish';font-size:9.5px;color:var(--accent)">WIS</div><div style="font-family:'Yeseva One',serif;font-size:18px">+3</div><div style="font-family:'Mulish';font-size:10px;color:var(--muted)">17</div></div>
+        <div class="roll" style="flex:1;text-align:center;border:1px solid var(--panelln);border-radius:10px;background:var(--panel);padding:7px 0"><div style="font-family:'Mulish';font-size:9.5px;color:var(--muted)">CHA</div><div style="font-family:'Yeseva One',serif;font-size:18px">+2</div><div style="font-family:'Mulish';font-size:10px;color:var(--muted)">14</div></div>
+      </div>
+      <div style="flex:none;width:210px;font-family:'Mulish';font-size:12px;color:var(--ink)">
+        <div style="font-size:10px;letter-spacing:.1em;color:var(--muted);text-transform:uppercase;margin-bottom:3px">Saving Throws</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:1px 14px;line-height:1.7">
+          <div>○ Str <b style="float:right">−1</b></div><div style="color:var(--accent)">● Int <b style="float:right">+4</b></div>
+          <div>○ Dex <b style="float:right">+3</b></div><div style="color:var(--accent)">● Wis <b style="float:right">+6</b></div>
+          <div>○ Con <b style="float:right">+1</b></div><div>○ Cha <b style="float:right">+2</b></div>
+        </div>
+      </div>
+    </div>
+    <!-- skills -->
+    <div style="display:flex;align-items:center;gap:12px;margin:18px 0 10px"><div style="font-family:'Caveat',cursive;font-size:25px;color:var(--accent)">Skills</div><div style="flex:1;height:1px;background:var(--panelln)"></div></div>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:2px 26px;font-family:'Mulish';font-size:12.5px;line-height:1.85">
+      <div style="border-bottom:1px dotted var(--panelln)">○ Acrobatics <b style="float:right;font-weight:600">+3</b></div>
+      <div style="border-bottom:1px dotted var(--panelln)">○ Animal Handling <b style="float:right;font-weight:600">+3</b></div>
+      <div style="border-bottom:1px dotted var(--panelln);color:var(--accent)">● Arcana <b style="float:right">+4</b></div>
+      <div style="border-bottom:1px dotted var(--panelln)">○ Athletics <b style="float:right;font-weight:600">−1</b></div>
+      <div style="border-bottom:1px dotted var(--panelln)">○ Deception <b style="float:right;font-weight:600">+2</b></div>
+      <div style="border-bottom:1px dotted var(--panelln)">○ History <b style="float:right;font-weight:600">+1</b></div>
+      <div style="border-bottom:1px dotted var(--panelln)">○ Insight <b style="float:right;font-weight:600">+3</b></div>
+      <div style="border-bottom:1px dotted var(--panelln)">○ Intimidation <b style="float:right;font-weight:600">+2</b></div>
+      <div style="border-bottom:1px dotted var(--panelln)">○ Investigation <b style="float:right;font-weight:600">+1</b></div>
+      <div style="border-bottom:1px dotted var(--panelln);color:var(--accent)">● Medicine <b style="float:right">+6</b></div>
+      <div style="border-bottom:1px dotted var(--panelln);color:var(--accent)">● Nature <b style="float:right">+4</b></div>
+      <div style="border-bottom:1px dotted var(--panelln);color:var(--accent)">● Perception <b style="float:right">+6</b></div>
+      <div style="border-bottom:1px dotted var(--panelln)">○ Performance <b style="float:right;font-weight:600">+2</b></div>
+      <div style="border-bottom:1px dotted var(--panelln)">○ Persuasion <b style="float:right;font-weight:600">+2</b></div>
+      <div style="border-bottom:1px dotted var(--panelln)">○ Religion <b style="float:right;font-weight:600">+1</b></div>
+      <div style="border-bottom:1px dotted var(--panelln);color:var(--accent)">● Sleight of Hand <b style="float:right">+6</b></div>
+      <div style="border-bottom:1px dotted var(--panelln)">○ Stealth <b style="float:right;font-weight:600">+3</b></div>
+      <div style="border-bottom:1px dotted var(--panelln);color:var(--accent)">● Survival <b style="float:right">+6</b></div>
+    </div>
+    <!-- attacks + spells two-col -->
+    <div style="display:flex;gap:24px;margin-top:6px">
+      <div style="flex:1">
+        <div style="display:flex;align-items:center;gap:12px;margin:18px 0 10px"><div style="font-family:'Caveat',cursive;font-size:25px;color:var(--accent)">In a Pinch</div><div style="flex:1;height:1px;background:var(--panelln)"></div></div>
+        <div style="font-family:'Mulish';font-size:12.5px;color:var(--ink)">
+          <div style="display:grid;grid-template-columns:1.5fr .6fr 1fr;gap:4px 10px">
+            <div style="font-size:9px;color:var(--muted)">WEAPON</div><div style="font-size:9px;color:var(--muted)">HIT</div><div style="font-size:9px;color:var(--muted)">DMG</div>
+            <div class="roll">Brambwood Staff</div><div>+3</div><div>1d6+1</div>
+            <div class="roll">Tide Sickle</div><div>+6</div><div>1d4+3</div>
+            <div class="roll">Saltspray <span style="color:var(--muted)">(cantrip)</span></div><div>+6</div><div>1d8</div>
+          </div>
+          <div style="margin-top:7px;font-size:11.5px;color:var(--muted);font-style:italic">Action: cast / attack · Bonus: Tideheart heal · Reaction: Misty Step</div>
+        </div>
+      </div>
+      <div style="flex:1">
+        <div style="display:flex;align-items:center;gap:12px;margin:18px 0 10px"><div style="font-family:'Caveat',cursive;font-size:25px;color:var(--accent)">Spells <span style="font-family:'Mulish';font-size:11px;color:var(--muted)">DC 14 · +6</span></div><div style="flex:1;height:1px;background:var(--panelln)"></div></div>
+        <div style="font-family:'Mulish';font-size:12px;color:var(--ink);line-height:1.65">
+          <div><span style="font-size:10px;color:var(--muted)">CANTRIP</span> Druidcraft · Guidance · Saltspray</div>
+          <div><span style="font-size:10px;color:var(--accent)">LV1 ●●●●</span> Cure Wounds · Faerie Fire · Goodberry</div>
+          <div><span style="font-size:10px;color:var(--accent)">LV2 ●●○</span> Lesser Restoration · Moonbeam · Misty Step</div>
+          <div><span style="font-size:10px;color:var(--accent)">LV3 ●●</span> Tidal Wall · Sleet Storm</div>
+        </div>
+      </div>
+    </div>
+    <!-- features -->
+    <div style="display:flex;align-items:center;gap:12px;margin:18px 0 10px"><div style="font-family:'Caveat',cursive;font-size:25px;color:var(--accent)">Of Knack &amp; Kin</div><div style="flex:1;height:1px;background:var(--panelln)"></div></div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px 24px;font-family:'Mulish';font-size:12px;color:var(--ink)">
+      <div><b style="font-size:13px">Tideheart <span style="font-weight:600;color:var(--accent);font-family:'Spline Sans Mono';font-size:10px">●●○</span></b><div style="color:var(--muted);line-height:1.5;margin-top:2px">Reaction: ally drops to 0 HP within 30 ft → restore 1d8+WIS. 3/long rest.</div></div>
+      <div><b style="font-size:13px">Tall-Grass Folk</b><div style="color:var(--muted);line-height:1.5;margin-top:2px">Folk Resilience (adv. vs frightened) · Keen Senses · Speak with Small Beasts.</div></div>
+      <div><b style="font-size:13px">Brew Mastery</b><div style="color:var(--muted);line-height:1.5;margin-top:2px">Craft potions on a short rest; add proficiency twice to brew checks.</div></div>
+      <div><b style="font-size:13px">Potion Peddler <span style="color:var(--muted);font-weight:600">· background</span></b><div style="color:var(--muted);line-height:1.5;margin-top:2px">Word on the Road: a buyer, a bed, and a rumour in any settlement.</div></div>
+      <div><b style="font-size:13px">Witch's Knack · Spirit Bond</b><div style="color:var(--muted);line-height:1.5;margin-top:2px">Mochi aids your magic; cantrips scale, you sense its mood at any range.</div></div>
+      <div><b style="font-size:13px;color:var(--accent)">Feat · Spirit-Touched</b><div style="color:var(--muted);line-height:1.5;margin-top:2px">1/long rest: channel Mochi to cast Misty Step without a slot.</div></div>
+    </div>
+    <!-- inventory -->
+    <div style="display:flex;align-items:center;gap:12px;margin:18px 0 10px"><div style="font-family:'Caveat',cursive;font-size:25px;color:var(--accent)">What She Carries</div><div style="flex:1;height:1px;background:var(--panelln)"></div></div>
+    <div style="display:flex;gap:24px;font-family:'Mulish';font-size:12.5px;color:var(--ink)">
+      <div style="flex:1.2">
+        <div style="line-height:1.85">
+          <div style="border-bottom:1px dotted var(--panelln)">Brambwood Staff <span style="float:right;color:var(--muted)">4 lb</span></div>
+          <div style="border-bottom:1px dotted var(--panelln)">Tide Sickle <span style="float:right;color:var(--muted)">2 lb</span></div>
+          <div style="border-bottom:1px dotted var(--panelln)">Travel Cloak (light armor) <span style="float:right;color:var(--muted)">4 lb</span></div>
+          <div style="border-bottom:1px dotted var(--panelln)">Herbalism Kit · Alchemist's Supplies <span style="float:right;color:var(--muted)">11 lb</span></div>
+          <div style="border-bottom:1px dotted var(--panelln)">Empty bottles ×8 · bedroll · tinderbox <span style="float:right;color:var(--muted)">11 lb</span></div>
+          <div style="color:var(--muted);font-size:11.5px;margin-top:4px">Carried <b style="color:var(--ink)">32</b> / 120 lb</div>
+        </div>
+      </div>
+      <div style="flex:1">
+        <div style="font-size:10px;letter-spacing:.1em;color:var(--muted);text-transform:uppercase;margin-bottom:3px">Attuned <span style="color:var(--ink)">2 / 3</span></div>
+        <div style="line-height:1.7">
+          <div>◆ Brambwood Staff <span style="color:var(--muted)">+1, regrows</span></div>
+          <div>◆ Mistveil Charm <span style="color:var(--muted)">adv. vs charm</span></div>
+          <div style="color:var(--muted);font-style:italic">◇ open attunement slot</div>
+        </div>
+        <div style="margin-top:8px;font-size:11.5px"><b style="color:var(--muted);font-weight:700">Purse</b> &nbsp;1 pp · 12 gp · 3 sp · 40 cp</div>
+      </div>
+    </div>
+    <!-- potions & spirit -->
+    <div style="display:flex;align-items:center;gap:12px;margin:18px 0 10px"><div style="font-family:'Caveat',cursive;font-size:25px;color:var(--accent)">Cauldron &amp; Companion</div><div style="flex:1;height:1px;background:var(--panelln)"></div></div>
+    <div style="display:flex;gap:24px;font-family:'Mulish';font-size:12.5px;color:var(--ink)">
+      <div style="flex:1.1">
+        <div style="font-size:10px;letter-spacing:.1em;color:var(--muted);text-transform:uppercase">Larder &amp; Recipes <span style="text-transform:none;letter-spacing:0">· brew +9</span></div>
+        <div style="line-height:1.7;margin-top:3px">Glimmercap ×3 · River Salt ×2 · Moon-Moth Wing ×4 · Bog Honey ×2</div>
+        <div style="line-height:1.6;margin-top:6px">
+          <div class="roll" style="border-bottom:1px dotted var(--panelln)"><b>Mistveil Draught</b> <span style="float:right;color:var(--muted)">DC 12 · fog 20ft</span></div>
+          <div class="roll" style="border-bottom:1px dotted var(--panelln)"><b>Tall-Grass Tonic</b> <span style="float:right;color:var(--muted)">DC 12 · +1d4 save</span></div>
+          <div class="roll"><b style="color:var(--accent)">Ember Bottle</b> <span style="float:right;color:var(--muted)">DC 15 · 2d6 fire</span></div>
+        </div>
+      </div>
+      <div style="flex:1;display:flex;gap:11px;background:var(--soft);border:1px solid var(--softln);border-radius:13px;padding:11px 13px">
+        <image-slot id="journal-spirit" style="width:56px;height:56px;flex:none;border-radius:50%;border:2px solid #fff" shape="circle" placeholder="spirit"></image-slot>
+        <div style="flex:1">
+          <div style="font-family:'Yeseva One',serif;font-size:18px;color:var(--ink);line-height:1">Mochi <span style="font-family:'Mulish';font-size:11px;color:var(--muted)">· grass-spirit</span></div>
+          <div style="margin:4px 0;font-size:11.5px;color:var(--ink)">AC 13 · HP 8 · Speed 25 · Fly 10</div>
+          <div style="font-size:11.5px;line-height:1.5"><b>Gust</b> <span style="color:var(--muted)">push 10ft, 1/day</span> · <b>Hush</b> · <b>Find the Path</b></div>
+        </div>
+      </div>
+    </div>
+    <!-- bio -->
+    <div style="display:flex;align-items:center;gap:12px;margin:18px 0 10px"><div style="font-family:'Caveat',cursive;font-size:25px;color:var(--accent)">Her Own Account</div><div style="flex:1;height:1px;background:var(--panelln)"></div></div>
+    <div style="display:flex;gap:10px;font-family:'Mulish';font-size:11.5px;color:var(--muted);margin-bottom:9px">
+      <div style="flex:1"><b style="color:var(--accent);font-family:'Caveat';font-size:15px">Ideal.</b> A remedy freely given is worth more than coin.</div>
+      <div style="flex:1"><b style="color:var(--accent);font-family:'Caveat';font-size:15px">Bond.</b> The reef that raised her; the witch who taught her to brew.</div>
+      <div style="flex:1"><b style="color:var(--accent);font-family:'Caveat';font-size:15px">Flaw.</b> Never refuses a dare, however ill-advised.</div>
+    </div>
+    <div style="font-family:'Spectral',serif;font-size:13.5px;color:var(--ink);line-height:1.75"><span style="float:left;font-family:'Yeseva One',serif;font-size:46px;line-height:.8;color:var(--accent);margin:4px 9px 0 0">P</span>im learned her brewing from a tide-witch on the southern reefs, trading tonics for stories. She wanders the tall grass with Mochi at her shoulder, mapping spirit-paths, bottling weather, and leaving every village a little better stocked than she found it. <span style="color:var(--muted)">Allies: the Mistveil festival-keepers · the ferryman at Reed Crossing.</span></div>
+    <!--JOURNAL--></div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:700,&quot;height&quot;:1100}}"></script>
+</body>
+</html>

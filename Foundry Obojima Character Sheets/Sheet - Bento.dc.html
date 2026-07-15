@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Yeseva+One&family=Spectral:ital,wght@0,400;0,500;1,400;1,500&family=Caveat:wght@500;600;700&family=Mulish:wght@400;500;600;700;800&family=Spline+Sans+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="./image-slot.js"></script>
+<style>
+  *{box-sizing:border-box}
+  .roll{transition:transform .14s ease, filter .14s ease}
+  .roll:hover{transform:translateY(-1px);filter:brightness(1.1);cursor:pointer}
+  @keyframes twk{0%,100%{opacity:.4;transform:scale(.85)}50%{opacity:1;transform:scale(1.15)}}
+</style>
+</helmet>
+<div style="--ink:#d6e3e4;--muted:#83a6ae;--panel:rgba(30,54,63,.85);--panelln:#37545d;--accent:#eebd6a;--soft:rgba(78,52,22,.5);--softln:#b5894a;--hp:#e0954a;--ring:#e3b86a;width:100%;position:relative;border-radius:16px;overflow:hidden;box-shadow:0 22px 50px rgba(8,18,24,.5);background:radial-gradient(ellipse at 50% 12%,#2e5260,transparent 60%),linear-gradient(170deg,#1e3a44,#163039 55%,#0e222c);font-family:'Mulish',sans-serif;color:var(--ink)">
+  <div style="position:absolute;left:18%;top:20%;width:5px;height:5px;border-radius:50%;background:#f3a23a;box-shadow:0 0 8px 2px #f3a23a;animation:twk 4s ease-in-out infinite"></div>
+  <div style="position:absolute;right:24%;top:14%;width:4px;height:4px;border-radius:50%;background:#ffcf7a;box-shadow:0 0 7px 2px #ffcf7a;animation:twk 5s ease-in-out infinite 1s"></div>
+  <div style="position:absolute;left:40%;bottom:14%;width:4px;height:4px;border-radius:50%;background:#f6b85a;box-shadow:0 0 7px 2px #f6b85a;animation:twk 4.5s ease-in-out infinite .5s"></div>
+  <!-- title -->
+  <div style="position:relative;height:38px;display:flex;align-items:center;padding:0 18px;gap:9px;border-bottom:1px solid var(--panelln)">
+    <div style="width:8px;height:8px;border-radius:50%;background:var(--accent)"></div>
+    <div style="font-family:'Spectral',serif;font-style:italic;font-size:14px;color:#f6ecd6;flex:1">Pim Hollowillow · Ember Bento</div>
+    <div style="font-family:'Spline Sans Mono',monospace;font-size:11px;color:var(--muted)">WITCH 5 · TALL-GRASS</div>
+  </div>
+  <!-- bento grid -->
+  <div style="position:relative;display:grid;grid-template-columns:repeat(6,1fr);gap:11px;padding:14px 16px 16px">
+    <!-- identity -->
+    <div style="grid-column:span 2;background:var(--panel);border:1px solid var(--panelln);border-radius:14px;padding:13px;text-align:center">
+      <image-slot id="bento-portrait" style="width:74px;height:74px;border-radius:50%;border:2px solid var(--ring);box-shadow:0 0 18px rgba(243,162,58,.35);margin:0 auto" shape="circle" placeholder="portrait"></image-slot>
+      <div style="font-family:'Yeseva One',serif;font-size:18px;color:#f6ecd6;line-height:1.1;margin-top:7px">Pim Hollowillow</div>
+      <div style="font-family:'Spectral',serif;font-style:italic;font-size:11px;color:var(--muted);margin-bottom:9px">Tideheart Witch · Lv 5</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:5px">
+        <div class="roll" style="background:rgba(36,62,72,.7);border-radius:8px;padding:5px 0"><div style="font-size:8px;color:var(--muted)">ARMOR</div><div style="font-family:'Yeseva One',serif;font-size:16px;color:#f6ecd6">14</div></div>
+        <div class="roll" style="background:rgba(70,46,20,.5);border:1px solid var(--softln);border-radius:8px;padding:5px 0"><div style="font-size:8px;color:var(--accent)">HP</div><div style="font-family:'Yeseva One',serif;font-size:16px;color:#f6d99a">32<span style="font-size:10px">/38</span></div></div>
+        <div class="roll" style="background:rgba(36,62,72,.7);border-radius:8px;padding:5px 0"><div style="font-size:8px;color:var(--muted)">INIT</div><div style="font-family:'Yeseva One',serif;font-size:16px;color:#f6ecd6">+3</div></div>
+        <div class="roll" style="background:rgba(36,62,72,.7);border-radius:8px;padding:5px 0"><div style="font-size:8px;color:var(--muted)">SPEED</div><div style="font-family:'Yeseva One',serif;font-size:16px;color:#f6ecd6">30</div></div>
+      </div>
+    </div>
+    <!-- abilities -->
+    <div style="grid-column:span 2;background:var(--panel);border:1px solid var(--panelln);border-radius:14px;padding:13px">
+      <div style="font-family:'Caveat',cursive;font-size:18px;color:var(--accent);margin-bottom:7px">Abilities</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px">
+        <div class="roll" style="text-align:center;background:rgba(36,62,72,.6);border-radius:9px;padding:6px 0"><div style="font-size:9px;color:var(--muted)">STR</div><div style="font-family:'Yeseva One',serif;font-size:16px">−1</div></div>
+        <div class="roll" style="text-align:center;background:rgba(36,62,72,.6);border-radius:9px;padding:6px 0"><div style="font-size:9px;color:var(--muted)">DEX</div><div style="font-family:'Yeseva One',serif;font-size:16px">+3</div></div>
+        <div class="roll" style="text-align:center;background:rgba(36,62,72,.6);border-radius:9px;padding:6px 0"><div style="font-size:9px;color:var(--muted)">CON</div><div style="font-family:'Yeseva One',serif;font-size:16px">+1</div></div>
+        <div class="roll" style="text-align:center;background:rgba(36,62,72,.6);border-radius:9px;padding:6px 0"><div style="font-size:9px;color:var(--muted)">INT</div><div style="font-family:'Yeseva One',serif;font-size:16px">+1</div></div>
+        <div class="roll" style="text-align:center;background:rgba(70,46,20,.5);border:1px solid var(--softln);border-radius:9px;padding:6px 0"><div style="font-size:9px;color:var(--accent)">WIS</div><div style="font-family:'Yeseva One',serif;font-size:16px">+3</div></div>
+        <div class="roll" style="text-align:center;background:rgba(36,62,72,.6);border-radius:9px;padding:6px 0"><div style="font-size:9px;color:var(--muted)">CHA</div><div style="font-family:'Yeseva One',serif;font-size:16px">+2</div></div>
+      </div>
+      <div style="font-size:11px;color:var(--muted);margin-top:8px;line-height:1.5">Saves <b style="color:var(--accent)">WIS +6 · INT +4</b><br>Prof +3 · PP 16 · Hit Dice 5d8</div>
+    </div>
+    <!-- combat -->
+    <div style="grid-column:span 2;background:var(--panel);border:1px solid var(--panelln);border-radius:14px;padding:13px">
+      <div style="font-family:'Caveat',cursive;font-size:18px;color:var(--accent);margin-bottom:6px">In Combat</div>
+      <div style="font-size:11.5px;color:var(--ink);line-height:1.6">
+        <div class="roll">Brambwood Staff <span style="float:right">+3 · 1d6+1</span></div>
+        <div class="roll">Tide Sickle <span style="float:right">+6 · 1d4+3</span></div>
+        <div class="roll">Saltspray <span style="float:right">+6 · 1d8</span></div>
+      </div>
+      <div style="display:flex;align-items:center;gap:6px;margin-top:9px;font-size:10.5px;color:var(--muted)">Death <span style="display:inline-flex;gap:3px"><i style="width:8px;height:8px;border-radius:50%;border:1.5px solid var(--accent)"></i><i style="width:8px;height:8px;border-radius:50%;border:1.5px solid var(--accent)"></i><i style="width:8px;height:8px;border-radius:50%;border:1.5px solid var(--accent)"></i></span> / <span style="display:inline-flex;gap:3px"><i style="width:8px;height:8px;border-radius:50%;border:1.5px solid var(--hp)"></i><i style="width:8px;height:8px;border-radius:50%;border:1.5px solid var(--hp)"></i><i style="width:8px;height:8px;border-radius:50%;border:1.5px solid var(--hp)"></i></span></div>
+    </div>
+    <!-- skills -->
+    <div style="grid-column:span 3;background:var(--panel);border:1px solid var(--panelln);border-radius:14px;padding:13px">
+      <div style="font-family:'Caveat',cursive;font-size:18px;color:var(--accent);margin-bottom:6px">Skills</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:0 18px;font-size:11.5px;line-height:1.72">
+        <div>○ Acrobatics <b style="float:right;font-weight:600">+3</b></div>
+        <div>○ Animal Handling <b style="float:right;font-weight:600">+3</b></div>
+        <div style="color:var(--accent)">● Arcana <b style="float:right">+4</b></div>
+        <div>○ Athletics <b style="float:right;font-weight:600">−1</b></div>
+        <div>○ Deception <b style="float:right;font-weight:600">+2</b></div>
+        <div>○ History <b style="float:right;font-weight:600">+1</b></div>
+        <div>○ Insight <b style="float:right;font-weight:600">+3</b></div>
+        <div>○ Intimidation <b style="float:right;font-weight:600">+2</b></div>
+        <div>○ Investigation <b style="float:right;font-weight:600">+1</b></div>
+        <div style="color:var(--accent)">● Medicine <b style="float:right">+6</b></div>
+        <div style="color:var(--accent)">● Nature <b style="float:right">+4</b></div>
+        <div style="color:var(--accent)">● Perception <b style="float:right">+6</b></div>
+        <div>○ Performance <b style="float:right;font-weight:600">+2</b></div>
+        <div>○ Persuasion <b style="float:right;font-weight:600">+2</b></div>
+        <div>○ Religion <b style="float:right;font-weight:600">+1</b></div>
+        <div style="color:var(--accent)">● Sleight of Hand <b style="float:right">+6</b></div>
+        <div>○ Stealth <b style="float:right;font-weight:600">+3</b></div>
+        <div style="color:var(--accent)">● Survival <b style="float:right">+6</b></div>
+      </div>
+    </div>
+    <!-- spells -->
+    <div style="grid-column:span 3;background:var(--panel);border:1px solid var(--panelln);border-radius:14px;padding:13px">
+      <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:6px"><span style="font-family:'Caveat',cursive;font-size:18px;color:var(--accent)">Spells</span><span style="font-size:10.5px;color:var(--muted)">DC 14 · +6 · WIS</span></div>
+      <div style="font-size:11.5px;color:var(--ink);line-height:1.6">
+        <div><span style="font-family:'Spline Sans Mono';font-size:9.5px;color:var(--muted)">CANT</span> Druidcraft · Guidance · Saltspray · Prestidigitation</div>
+        <div><span style="font-family:'Spline Sans Mono';font-size:9.5px;color:var(--accent)">LV1 ●●●●</span> Cure Wounds · Faerie Fire <span style="color:var(--muted)">C</span> · Goodberry · Detect Magic <span style="color:var(--muted)">R</span></div>
+        <div><span style="font-family:'Spline Sans Mono';font-size:9.5px;color:var(--accent)">LV2 ●●○</span> Lesser Restoration · Moonbeam <span style="color:var(--muted)">C</span> · Misty Step</div>
+        <div><span style="font-family:'Spline Sans Mono';font-size:9.5px;color:var(--accent)">LV3 ●●</span> Tidal Wall <span style="color:var(--muted)">C</span> · Sleet Storm <span style="color:var(--muted)">C</span></div>
+      </div>
+    </div>
+    <!-- features -->
+    <div style="grid-column:span 3;background:var(--panel);border:1px solid var(--panelln);border-radius:14px;padding:13px">
+      <div style="font-family:'Caveat',cursive;font-size:18px;color:var(--accent);margin-bottom:6px">Features &amp; Traits</div>
+      <div style="font-size:11.5px;color:var(--ink);line-height:1.62">
+        <div><b>Tideheart</b> <span style="color:var(--accent)">●●○</span> <span style="color:var(--muted)">— reaction heal 1d8+WIS, 3/rest</span></div>
+        <div><b>Brew Mastery</b> <span style="color:var(--muted)">— craft on short rest, prof ×2</span></div>
+        <div><b>Tall-Grass Folk</b> <span style="color:var(--muted)">— resilience, keen senses, small-beast speech</span></div>
+        <div><b>Potion Peddler</b> <span style="color:var(--muted)">— word on the road</span></div>
+        <div><b style="color:var(--accent)">Feat · Spirit-Touched</b> <span style="color:var(--muted)">— free Misty Step 1/rest</span></div>
+      </div>
+    </div>
+    <!-- inventory -->
+    <div style="grid-column:span 3;background:var(--panel);border:1px solid var(--panelln);border-radius:14px;padding:13px">
+      <div style="font-family:'Caveat',cursive;font-size:18px;color:var(--accent);margin-bottom:6px">Inventory</div>
+      <div style="font-size:11.5px;color:var(--ink);line-height:1.55">Brambwood Staff · Tide Sickle · Travel Cloak · Herbalism &amp; Alchemist's kits · 8 bottles <span style="color:var(--muted)">(32/120 lb)</span></div>
+      <div style="font-size:11.5px;color:var(--ink);margin-top:6px;line-height:1.5"><span style="color:var(--muted)">Attuned 2/3:</span> ◆ Brambwood Staff · ◆ Mistveil Charm · ◇ open</div>
+      <div style="font-size:11.5px;color:var(--ink);margin-top:6px"><span style="color:var(--muted)">Purse:</span> 1 pp · 12 gp · 3 sp · 40 cp</div>
+    </div>
+    <!-- potions -->
+    <div style="grid-column:span 2;background:var(--panel);border:1px solid var(--panelln);border-radius:14px;padding:13px">
+      <div style="font-family:'Caveat',cursive;font-size:18px;color:var(--accent);margin-bottom:6px">Cauldron <span style="font-family:'Mulish';font-size:10px;color:var(--muted)">brew +9</span></div>
+      <div style="font-size:11px;color:var(--muted);margin-bottom:5px">Glimmercap ×3 · River Salt ×2 · Moon-Moth ×4</div>
+      <div style="font-size:11.5px;color:var(--ink);line-height:1.55">
+        <div class="roll"><b>Mistveil Draught</b> <span style="float:right;color:var(--muted)">DC12</span></div>
+        <div class="roll"><b>Tall-Grass Tonic</b> <span style="float:right;color:var(--muted)">DC12</span></div>
+        <div class="roll"><b style="color:var(--accent)">Ember Bottle</b> <span style="float:right;color:var(--muted)">DC15</span></div>
+      </div>
+    </div>
+    <!-- spirit -->
+    <div style="grid-column:span 2;background:rgba(70,46,20,.32);border:1px solid var(--softln);border-radius:14px;padding:13px">
+      <div style="display:flex;gap:9px;align-items:center;margin-bottom:7px">
+        <image-slot id="bento-spirit" style="width:46px;height:46px;flex:none;border-radius:50%;border:2px solid var(--ring)" shape="circle" placeholder="spirit"></image-slot>
+        <div><div style="font-family:'Yeseva One',serif;font-size:16px;color:#f6ecd6;line-height:1">Mochi</div><div style="font-size:10px;color:var(--muted)">grass-spirit · glows faintly</div></div>
+      </div>
+      <div style="font-size:11px;color:var(--ink);margin-bottom:4px">AC 13 · HP 8 · Spd 25 · Fly 10</div>
+      <div style="font-size:11px;color:var(--ink);line-height:1.45"><b>Gust</b> <span style="color:var(--muted)">1/day</span> · <b>Hush</b> · <b>Find the Path</b></div>
+    </div>
+    <!-- bio -->
+    <div style="grid-column:span 2;background:var(--panel);border:1px solid var(--panelln);border-radius:14px;padding:13px">
+      <div style="font-family:'Caveat',cursive;font-size:18px;color:var(--accent);margin-bottom:4px">Bio</div>
+      <div style="font-size:10.5px;color:var(--muted);line-height:1.5;margin-bottom:5px"><b style="color:var(--accent)">Ideal</b> remedy over coin · <b style="color:var(--accent)">Flaw</b> never refuses a dare</div>
+      <div style="font-family:'Spectral',serif;font-size:11.5px;color:var(--ink);line-height:1.55">Trained by a tide-witch on the southern reefs; wanders the tall grass with Mochi, mapping spirit-paths and bottling weather.</div>
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:820,&quot;height&quot;:640}}"></script>
+</body>
+</html>

@@ -1,0 +1,62 @@
+/* Obojima — design tokens and window chrome.
+ * Styles are intentionally UNLAYERED so they win over any system @layer rules,
+ * and are scoped under .obojima so they never leak to other sheets.
+ * IMPORTANT: element resets (button/box-sizing) are scoped to .oa-root — our
+ * content root — so they never touch Foundry's window-header controls (which
+ * use the Font Awesome icon font and would break under font-family:inherit).
+ * Fonts are self-hosted — see styles/partials/_fonts.css. */
+
+.obojima {
+  --oa-ink: #244b3b;
+  --oa-muted: #2c3f35;
+  --oa-panel: #ffffff;
+  --oa-panelln: #dfe9dd;
+  --oa-accent: #c4870f;
+  --oa-onaccent: #2c3f1d;
+  --oa-soft: #eef4e4;
+  --oa-softln: #cfe0bb;
+  --oa-hp: #c25b3a;
+  --oa-font: 'Shantell Sans', ui-sans-serif, system-ui, sans-serif;
+  --oa-hand: 'Architects Daughter', var(--oa-font);
+  --oa-serif: 'Spectral', Georgia, serif;
+}
+
+/* Window shell: let the meadow background fill the content area. */
+.obojima .window-content {
+  padding: 0;
+  background:
+    linear-gradient(180deg, rgba(44,142,198,.12), rgba(151,196,104,.14)),
+    url('../assets/meadow-sky.png') center 38% / cover no-repeat,
+    linear-gradient(180deg, #2c8ec6 0%, #5fb2d6 26%, #cfeaef 50%, #c6e0a2 74%, #97c468 100%);
+  font-family: var(--oa-font);
+  color: var(--oa-ink);
+  overflow: auto;
+}
+.obojima .oa-root, .obojima .oa-root * { box-sizing: border-box; }
+
+/* Roll affordance */
+.obojima .oa-roll { transition: transform .14s ease, filter .14s ease; }
+.obojima .oa-roll:hover { transform: translateY(-1px); filter: brightness(1.04); cursor: pointer; }
+
+/* Reset buttons used as clickable cells. Targeted to our content root ONLY (so
+   Foundry's Font Awesome window-header controls keep their icon font), and kept
+   at low specificity via :where() so our own .oa-* button styles still win. */
+.obojima :where(.oa-root button) {
+  font-family: inherit; color: inherit; background: none; border: none;
+  padding: 0; margin: 0; text-align: left; cursor: pointer;
+}
+.obojima input.oa-inline-text,
+.obojima input.oa-inline-num,
+.obojima select.oa-inline-select {
+  font-family: inherit; color: var(--oa-ink); background: transparent;
+  border: none; border-bottom: 1.5px solid var(--oa-softln); outline: none;
+  font-size: 12px; padding: 1px 2px;
+}
+.obojima input.oa-inline-num { width: 40px; text-align: center; }
+.obojima input.oa-qty { width: 34px; }
+.obojima .oa-flex { flex: 1; min-width: 0; }
+
+/* Hide native number-input spinners for a clean look (our content only). */
+.obojima .oa-root input[type="number"] { -moz-appearance: textfield; appearance: textfield; }
+.obojima .oa-root input[type="number"]::-webkit-outer-spin-button,
+.obojima .oa-root input[type="number"]::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }

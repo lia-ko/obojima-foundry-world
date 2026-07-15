@@ -1,0 +1,67 @@
+<div class="oa-spell-head">
+  <div class="oa-mini"><div class="oa-mini-label">Save DC</div><div class="oa-mini-val">{{spells.dc}}</div></div>
+  <div class="oa-mini"><div class="oa-mini-label">Spell Atk</div><div class="oa-mini-val">{{spells.atk}}</div></div>
+  <div class="oa-mini"><div class="oa-mini-label">Ability</div>
+    {{#if editable}}
+      <select class="oa-mini-select" name="system.attributes.spellcasting">
+        <option value="str" {{#if (oa-eq system.attributes.spellcasting 'str')}}selected{{/if}}>STR</option>
+        <option value="dex" {{#if (oa-eq system.attributes.spellcasting 'dex')}}selected{{/if}}>DEX</option>
+        <option value="con" {{#if (oa-eq system.attributes.spellcasting 'con')}}selected{{/if}}>CON</option>
+        <option value="int" {{#if (oa-eq system.attributes.spellcasting 'int')}}selected{{/if}}>INT</option>
+        <option value="wis" {{#if (oa-eq system.attributes.spellcasting 'wis')}}selected{{/if}}>WIS</option>
+        <option value="cha" {{#if (oa-eq system.attributes.spellcasting 'cha')}}selected{{/if}}>CHA</option>
+      </select>
+    {{else}}<div class="oa-mini-val">{{spells.ability}}</div>{{/if}}
+  </div>
+  <div class="oa-mini {{#if spells.overPrepared}}oa-over{{/if}}"><div class="oa-mini-label">Prepared</div><div class="oa-mini-val">{{spells.prepared}}{{#if isCaster}} / {{spells.maxPrepared}}{{/if}}</div></div>
+</div>
+{{#if isWizard}}<div class="oa-spell-actions"><button type="button" class="oa-add-list" data-action="arcaneRecovery" title="Recover spell slots on a short rest">✦ Arcane Recovery</button></div>{{/if}}
+
+{{#if editable}}
+  <div class="oa-subhead">Spell Slots</div>
+  <div class="oa-slot-editor">
+    {{#each spells.slotEditor}}
+      <label class="oa-slot-cell">L{{this.level}}
+        <input type="number" class="oa-inline-num" name="system.spells.spell{{this.level}}.value" value="{{this.value}}">/<input type="number" class="oa-inline-num" name="system.spells.spell{{this.level}}.max" value="{{this.max}}">
+      </label>
+    {{/each}}
+  </div>
+
+  <div class="oa-subhead">Spells
+    <button type="button" class="oa-add" data-action="addRow" data-list="spellList" title="Add a blank spell row">＋</button>
+    {{#if isCaster}}<button type="button" class="oa-add-list" data-action="pickSpells" title="Add spells from the class list">＋ from list</button>{{/if}}
+  </div>
+  <div class="oa-spell-edit-list">
+    {{#each spells.list}}
+      <div class="oa-spell-edit-row">
+        <input type="text" class="oa-inline-text oa-flex" data-oa-list="spellList" data-oa-index="{{this.index}}" data-oa-prop="name" value="{{this.name}}" placeholder="spell name">
+        <label class="oa-lv">Lv <input type="number" class="oa-inline-num" data-oa-list="spellList" data-oa-index="{{this.index}}" data-oa-prop="level" value="{{this.level}}"></label>
+        <label title="prepared"><input type="checkbox" data-oa-list="spellList" data-oa-index="{{this.index}}" data-oa-prop="prepared" {{#if this.prepared}}checked{{/if}}>●</label>
+        <label title="concentration"><input type="checkbox" data-oa-list="spellList" data-oa-index="{{this.index}}" data-oa-prop="concentration" {{#if this.concentration}}checked{{/if}}>C</label>
+        <label title="ritual"><input type="checkbox" data-oa-list="spellList" data-oa-index="{{this.index}}" data-oa-prop="ritual" {{#if this.ritual}}checked{{/if}}>R</label>
+        <button type="button" class="oa-remove" data-action="removeRow" data-list="spellList" data-index="{{this.index}}">×</button>
+      </div>
+    {{else}}<div class="oa-empty-inline">No spells yet.</div>{{/each}}
+  </div>
+{{else}}
+  {{#if spells.levels.length}}
+  <div class="oa-spell-grid">
+    <div class="oa-spell-col-head">Level</div>
+    <div class="oa-spell-col-head">Slots</div>
+    <div class="oa-spell-col-head">Spells <span class="oa-legend">● prepared · C conc · R ritual</span></div>
+    {{#each spells.levels}}
+      <div class="oa-spell-level">{{this.label}}</div>
+      <div class="oa-spell-slots">
+        {{#if this.cantrip}}∞{{else}}{{#if this.slots}}{{#each (oa-dots this.slots.value this.slots.max)}}{{#if this}}●{{else}}○{{/if}}{{/each}}{{else}}—{{/if}}{{/if}}
+      </div>
+      <div class="oa-spell-list">
+        {{#each this.spells}}
+          <button type="button" class="oa-spell oa-roll {{#if this.prepared}}is-prepared{{/if}}" data-action="roll" data-roll-type="spell" data-index="{{this.index}}">
+            {{#if this.prepared}}<span class="oa-prep">●</span>{{/if}}{{this.name}}{{#if this.concentration}} <span class="oa-flag">C</span>{{/if}}{{#if this.ritual}} <span class="oa-flag">R</span>{{/if}}
+          </button>{{#unless @last}} · {{/unless}}
+        {{/each}}
+      </div>
+    {{/each}}
+  </div>
+  {{else}}<p class="oa-empty">No spells yet. Switch on edit mode to add them.</p>{{/if}}
+{{/if}}

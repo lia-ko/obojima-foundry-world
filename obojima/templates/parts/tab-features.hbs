@@ -1,0 +1,36 @@
+{{#if editable}}
+  <div class="oa-subhead">Features
+    <button type="button" class="oa-add" data-action="addRow" data-list="features" title="Add a blank feature">＋</button>
+    <button type="button" class="oa-add-list" data-action="pickFeat" title="Add an Obojima feat">＋ Feat</button>
+  </div>
+  <div class="oa-feature-edit-list">
+    {{#each features}}
+      <div class="oa-feature-edit-row">
+        <input type="text" class="oa-inline-text oa-flex" data-oa-list="features" data-oa-index="{{this.index}}" data-oa-prop="name" value="{{this.name}}" placeholder="feature">
+        <input type="text" class="oa-inline-text oa-src" data-oa-list="features" data-oa-index="{{this.index}}" data-oa-prop="source" value="{{this.source}}" placeholder="source">
+        <label class="oa-uses">uses <input type="number" class="oa-inline-num" data-oa-list="features" data-oa-index="{{this.index}}" data-oa-prop="uses.value" value="{{this.uses.value}}">/<input type="number" class="oa-inline-num" data-oa-list="features" data-oa-index="{{this.index}}" data-oa-prop="uses.max" value="{{this.uses.max}}"></label>
+        <input type="text" class="oa-inline-text oa-rec" data-oa-list="features" data-oa-index="{{this.index}}" data-oa-prop="recovery" value="{{this.recovery}}" placeholder="recovery">
+        <button type="button" class="oa-remove" data-action="removeRow" data-list="features" data-index="{{this.index}}">×</button>
+        <input type="text" class="oa-inline-text oa-feature-desc-input" data-oa-list="features" data-oa-index="{{this.index}}" data-oa-prop="description" value="{{this.description}}" placeholder="description…">
+      </div>
+    {{else}}<div class="oa-empty-inline">No features yet.</div>{{/each}}
+  </div>
+{{else}}
+  {{#if features.length}}
+  <div class="oa-feature-grid">
+    {{#each features}}
+    <div class="oa-feature-card {{#if this.hasUses}}has-uses{{/if}}">
+      <div class="oa-feature-head">
+        <b class="oa-feature-name">{{this.name}}{{#if this.source}} <span class="oa-feature-src">· {{this.source}}</span>{{/if}}</b>
+        {{#if this.hasUses}}<span class="oa-feature-pips oa-roll" data-action="expendUse" data-index="{{this.index}}" title="Click to spend a use (restores when empty)">{{#each (oa-dots this.uses.value this.uses.max)}}<i class="oa-pip {{#if this}}on{{/if}}"></i>{{/each}}</span>{{/if}}
+      </div>
+      <div class="oa-feature-desc">{{this.description}}</div>
+      <div class="oa-feature-foot">
+        {{#if this.recovery}}<span class="oa-feature-recovery">{{this.uses.max}}/{{this.recovery}}</span>{{/if}}
+        {{#if this.actionable}}<button type="button" class="oa-use-btn oa-roll" data-action="useFeature" data-index="{{this.index}}">Use</button>{{/if}}
+      </div>
+    </div>
+    {{/each}}
+  </div>
+  {{else}}<p class="oa-empty">No features yet. Switch on edit mode to add them.</p>{{/if}}
+{{/if}}

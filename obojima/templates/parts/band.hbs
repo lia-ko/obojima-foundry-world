@@ -1,0 +1,56 @@
+<section class="oa-band">
+  <img class="oa-band-avatar" src="{{identity.img}}" alt="{{identity.name}}" {{#if editable}}data-action="editImage"{{/if}}>
+
+  <div class="oa-band-id">
+    {{#if editable}}
+      <input type="text" class="oa-inline-text oa-band-name" name="name" value="{{identity.name}}">
+    {{else}}
+      <div class="oa-band-name">{{identity.name}}</div>
+    {{/if}}
+    <div class="oa-band-sub">{{identity.subline}}</div>
+    <div class="oa-band-cls">
+      {{#if editable}}
+        <select class="oa-inline-select oa-cls-sel" data-oa-detail="className">
+          <option value="">— class —</option>
+          {{#each classOptions}}<option value="{{this.key}}" {{#if (oa-eq this.key ../system.details.className)}}selected{{/if}}>{{this.label}}</option>{{/each}}
+        </select>
+        {{#if subclassOptions.length}}
+        <select class="oa-inline-select oa-cls-sel" data-oa-detail="subclass">
+          <option value="">— subclass —</option>
+          {{#each subclassOptions}}<option value="{{this.key}}" {{#if (oa-eq this.key ../system.details.subclass)}}selected{{/if}}>{{this.label}}</option>{{/each}}
+        </select>
+        {{/if}}
+        <span class="oa-muted oa-lv-badge">Lv {{system.details.level}}</span>
+      {{else}}
+        {{#if identity.className}}<b>{{identity.className}}{{#if identity.level}} {{identity.level}}{{/if}}</b>{{#if identity.subclass}} · {{identity.subclass}}{{/if}}{{else}}<span class="oa-muted">No class yet — click <b>Edit</b> to build your character</span>{{/if}}
+      {{/if}}
+    </div>
+    {{#if editable}}
+      <button type="button" class="oa-levelup-btn {{#if build.needsSetup}}oa-build-cta{{/if}}" data-action="levelUp" {{#unless build.canBuild}}disabled{{/unless}}>{{build.label}}</button>
+      {{#if build.needsSetup}}<div class="oa-build-hint">Fills in your saves, skills, HP, spell slots &amp; starting gear — you'll be asked a few quick choices.</div>{{/if}}
+      <button type="button" class="oa-mini-btn" data-action="genAbilities">Set Ability Scores</button>
+    {{/if}}
+  </div>
+
+  <div class="oa-vitals">
+    <div class="oa-stat"><div class="oa-stat-label">AC</div>
+      {{#if editable}}<input type="number" class="oa-stat-input" name="system.attributes.ac" value="{{system.attributes.ac}}">{{else}}<div class="oa-stat-val">{{core.ac}}</div>{{/if}}</div>
+    <div class="oa-stat oa-stat-hp"><div class="oa-stat-label">HP</div>
+      {{#if editable}}<div class="oa-hp-edit"><input type="number" class="oa-stat-input" name="system.attributes.hp.value" value="{{system.attributes.hp.value}}"><span>/</span><input type="number" class="oa-stat-input" name="system.attributes.hp.max" value="{{system.attributes.hp.max}}"></div>{{else}}<div class="oa-stat-val">{{core.hp.value}}<span class="oa-stat-sub">/{{core.hp.max}}</span></div>{{/if}}</div>
+    <div class="oa-stat oa-roll" data-action="roll" data-roll-type="initiative"><div class="oa-stat-label">INIT</div><div class="oa-stat-val">{{core.init}}</div></div>
+    <div class="oa-stat"><div class="oa-stat-label">SPD</div>
+      {{#if editable}}<input type="number" class="oa-stat-input" name="system.attributes.speed" value="{{system.attributes.speed}}">{{else}}<div class="oa-stat-val">{{core.speed}}</div>{{/if}}</div>
+  </div>
+
+  <div class="oa-band-divider"></div>
+
+  <div class="oa-abil-row">
+    {{#each abilities}}
+    <div class="oa-ability {{#if this.saveProficient}}is-prof{{/if}}">
+      <div class="oa-ability-key">{{this.label}}{{#if ../editable}}<i class="oa-save-toggle {{#if this.saveProficient}}on{{/if}}" data-action="toggleSaveProf" data-key="{{this.key}}" data-tooltip="Toggle save proficiency"></i>{{/if}}</div>
+      <button type="button" class="oa-ability-mod oa-roll" data-action="roll" data-roll-type="ability" data-key="{{this.key}}" data-tooltip="{{this.label}} check">{{this.mod}}</button>
+      {{#if ../editable}}<input type="number" class="oa-ability-input" name="system.abilities.{{this.key}}.value" value="{{this.value}}">{{else}}<div class="oa-ability-score">{{this.value}}</div>{{/if}}
+    </div>
+    {{/each}}
+  </div>
+</section>

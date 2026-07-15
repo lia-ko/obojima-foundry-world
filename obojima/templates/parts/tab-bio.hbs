@@ -1,0 +1,58 @@
+{{#if editable}}
+<div class="oa-create-rows">
+  <div class="oa-create-row">
+    <span class="oa-create-label">Ancestry</span>
+    <select class="oa-inline-select oa-flex" data-oa-detail="ancestry">
+      <option value="">— ancestry —</option>
+      {{#each ancestryOptions}}<option value="{{this.key}}" {{#if (oa-eq this.key ../system.details.ancestry)}}selected{{/if}}>{{this.label}}</option>{{/each}}
+    </select>
+    <button type="button" class="oa-add-list" data-action="applyAncestry" title="Apply ancestry: ability increases, skills, speed, languages, traits">Apply</button>
+  </div>
+  <div class="oa-create-row">
+    <span class="oa-create-label">Background</span>
+    <select class="oa-inline-select oa-flex" data-oa-detail="background">
+      <option value="">— background —</option>
+      {{#each backgroundOptions}}<option value="{{this.key}}" {{#if (oa-eq this.key ../system.details.background)}}selected{{/if}}>{{this.label}}</option>{{/each}}
+    </select>
+    <button type="button" class="oa-add-list" data-action="applyBackground" title="Apply background: skills, tools, equipment & feature">Apply</button>
+  </div>
+</div>
+<div class="oa-details-grid">
+  <label>Pronouns <input type="text" class="oa-inline-text" name="system.details.pronouns" value="{{system.details.pronouns}}"></label>
+  <label>Alignment <input type="text" class="oa-inline-text" name="system.details.alignment" value="{{system.details.alignment}}"></label>
+  <label>Hit Die <input type="text" class="oa-inline-text" name="system.details.hitDie" value="{{system.details.hitDie}}"></label>
+</div>
+{{/if}}
+
+<div class="oa-prof-block">
+  <div class="oa-section-title">Proficiencies</div>
+  {{#if editable}}
+    <label class="oa-prof-row">Armor <input type="text" class="oa-inline-text oa-flex" name="system.proficiencies.armor" value="{{system.proficiencies.armor}}"></label>
+    <label class="oa-prof-row">Weapons <input type="text" class="oa-inline-text oa-flex" name="system.proficiencies.weapons" value="{{system.proficiencies.weapons}}"></label>
+    <label class="oa-prof-row">Tools <input type="text" class="oa-inline-text oa-flex" name="system.proficiencies.tools" value="{{system.proficiencies.tools}}"></label>
+    <label class="oa-prof-row">Languages <input type="text" class="oa-inline-text oa-flex" name="system.proficiencies.languages" value="{{system.proficiencies.languages}}"></label>
+  {{else}}
+    {{#if system.proficiencies.armor}}<div><b>Armor:</b> {{system.proficiencies.armor}}</div>{{/if}}
+    {{#if system.proficiencies.weapons}}<div><b>Weapons:</b> {{system.proficiencies.weapons}}</div>{{/if}}
+    {{#if system.proficiencies.tools}}<div><b>Tools:</b> {{system.proficiencies.tools}}</div>{{/if}}
+    {{#if system.proficiencies.languages}}<div><b>Languages:</b> {{system.proficiencies.languages}}</div>{{/if}}
+    {{#unless (oa-or system.proficiencies.armor system.proficiencies.weapons system.proficiencies.tools system.proficiencies.languages)}}<div class="oa-muted">Pick a class and Level Up to fill these in.</div>{{/unless}}
+  {{/if}}
+</div>
+
+<div class="oa-bio-cards">
+  <div class="oa-bio-card"><div class="oa-bio-label">Ideal</div>
+    {{#if editable}}<input type="text" class="oa-inline-text" name="system.details.ideal" value="{{bio.ideal}}">{{else}}<div>{{bio.ideal}}</div>{{/if}}
+  </div>
+  <div class="oa-bio-card"><div class="oa-bio-label">Bond</div>
+    {{#if editable}}<input type="text" class="oa-inline-text" name="system.details.bond" value="{{bio.bond}}">{{else}}<div>{{bio.bond}}</div>{{/if}}
+  </div>
+  <div class="oa-bio-card"><div class="oa-bio-label">Flaw</div>
+    {{#if editable}}<input type="text" class="oa-inline-text" name="system.details.flaw" value="{{bio.flaw}}">{{else}}<div>{{bio.flaw}}</div>{{/if}}
+  </div>
+</div>
+{{#if editable}}
+  <textarea class="oa-bio-textarea" name="system.details.biography" placeholder="Backstory, allies, notes…">{{bio.biography}}</textarea>
+{{else}}
+  <div class="oa-bio-body">{{{bio.biography}}}</div>
+{{/if}}

@@ -1,0 +1,26 @@
+<section class="oa-detail">
+  <nav class="oa-tabs">
+    {{#each tabs}}
+    <button type="button" class="oa-tab-btn {{#if this.active}}active{{/if}}"
+            data-oa-tab="{{this.id}}">{{this.label}}</button>
+    {{/each}}
+  </nav>
+
+  <div class="oa-detail-body">
+    <div class="oa-tab {{#if (oa-eq activeTab 'spells')}}active{{/if}}">
+      {{> "systems/obojima/templates/parts/tab-spells.hbs"}}
+    </div>
+    <div class="oa-tab {{#if (oa-eq activeTab 'features')}}active{{/if}}">
+      {{> "systems/obojima/templates/parts/tab-features.hbs"}}
+    </div>
+    <div class="oa-tab {{#if (oa-eq activeTab 'inventory')}}active{{/if}}">
+      {{> "systems/obojima/templates/parts/tab-inventory.hbs"}}
+    </div>
+    <div class="oa-tab {{#if (oa-eq activeTab 'potions')}}active{{/if}}">
+      {{> "systems/obojima/templates/parts/tab-potions.hbs"}}
+    </div>
+    <div class="oa-tab {{#if (oa-eq activeTab 'bio')}}active{{/if}}">
+      {{> "systems/obojima/templates/parts/tab-bio.hbs"}}
+    </div>
+  </div>
+</section>
