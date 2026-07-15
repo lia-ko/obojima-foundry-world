@@ -57,15 +57,16 @@ export function readFields(root) {
  */
 async function promptForm(title, innerHTML, okLabel = "Confirm", width = null) {
   const DV2 = foundry.applications.api.DialogV2;
-  const result = await DV2.wait({
+  const config = {
     window: { title },
-    position: width ? { width } : undefined,
     content: `<div class="oa-build-form" style="display:flex;flex-direction:column;gap:8px">${innerHTML}</div>`,
     buttons: [
       { action: "ok", label: okLabel, default: true, callback: (event, button, dialog) => readFields(dialog?.element ?? button?.closest?.(".application, dialog") ?? null) },
-      { action: "cancel", label: "Skip" }
+      { action: "cancel", label: "Skip", callback: () => null }
     ]
-  }).catch(() => null);
+  };
+  if (width) config.position = { width };
+  const result = await DV2.wait(config).catch((err) => { console.error("Obojima | prompt dialog error:", err); return null; });
   return result === "cancel" || result == null ? null : result;
 }
 
@@ -206,10 +207,13 @@ export async function levelUp(actor) {
   await actor.update(update);
 
   // --- Guided prompts (applied as follow-up updates) ---
-  if (level === 1) await promptLevel1(actor, cls);
-  if (level === 1) await promptEquipment(actor, cls);
-  if (subKey && sub && level === cls.subclassLevel) await promptSubclass(actor, classKey, sub);
-  if (cls.asiLevels?.includes(level)) await promptASI(actor);
+  // Each is isolated so one failing prompt can't silently abort the rest, and any
+  // error surfaces in the console for diagnosis.
+  const safe = async (fn, label) => { try { await fn(); } catch (err) { console.error(`Obojima | ${label} prompt failed:`, err); ui.notifications?.error(`Obojima: the "${label}" step errored — see console (F12).`); } };
+  if (level === 1) await safe(() => promptLevel1(actor, cls), "skill/style");
+  if (level === 1) await safe(() => promptEquipment(actor, cls), "equipment");
+  if (subKey && sub && level === cls.subclassLevel) await safe(() => promptSubclass(actor, classKey, sub), "subclass");
+  if (cls.asiLevels?.includes(level)) await safe(() => promptASI(actor), "ability score improvement");
 
   ui.notifications?.info(`${cls.label} advanced to level ${level}.`);
   return level;
@@ -334,7 +338,7 @@ export async function generateAbilityScores(actor) {
       { action: "pointbuy", label: "Point Buy", callback: () => "pointbuy" },
       { action: "cancel", label: "Cancel", callback: () => "cancel" }
     ]
-  }).catch(() => "cancel");
+  }).catch((err) => { console.error("Obojima | ability-score dialog error:", err); return "cancel"; });
   if (!method || method === "cancel") return;
 
   const row = (k, i, options, selValue) =>
@@ -586,7 +590,7 @@ export async function castSpell(actor, spell) {
     window: { title: `Cast ${spell.name}` },
     content: `<p style="font-size:12px;margin:0">${spell.name} — ${ordinal(lvl)} level${spell.concentration ? " · concentration" : ""}. Choose a slot:</p>`,
     buttons
-  }).catch(() => "cancel");
+  }).catch((err) => { console.error("Obojima | cast dialog error:", err); return "cancel"; });
   if (!choice || choice === "cancel") return;
 
   if (choice.startsWith("L")) {
