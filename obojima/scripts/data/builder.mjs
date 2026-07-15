@@ -40,7 +40,11 @@ const recoveryLabel = (per) => ({ sr: "short rest", lr: "long rest", day: "day" 
  */
 export function readFields(root) {
   const out = {};
-  root?.querySelectorAll?.(".oa-build-form [name]")?.forEach((el) => {
+  // Locate our form container whether `root` is the dialog, contains it, or IS it.
+  const scope = root?.querySelector?.(".oa-build-form")
+    ?? (root?.classList?.contains?.("oa-build-form") ? root : null)
+    ?? (typeof document !== "undefined" ? document.querySelector?.(".oa-build-form") : null);
+  scope?.querySelectorAll?.("[name]")?.forEach((el) => {
     out[el.name] = el.type === "checkbox" ? el.checked : el.value;
   });
   return out;
@@ -58,7 +62,7 @@ async function promptForm(title, innerHTML, okLabel = "Confirm", width = null) {
     position: width ? { width } : undefined,
     content: `<div class="oa-build-form" style="display:flex;flex-direction:column;gap:8px">${innerHTML}</div>`,
     buttons: [
-      { action: "ok", label: okLabel, default: true, callback: (event, button, dialog) => readFields(dialog?.element) },
+      { action: "ok", label: okLabel, default: true, callback: (event, button, dialog) => readFields(dialog?.element ?? button?.closest?.(".application, dialog") ?? null) },
       { action: "cancel", label: "Skip" }
     ]
   }).catch(() => null);
