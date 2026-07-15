@@ -207,6 +207,7 @@ export async function levelUp(actor) {
   await actor.update(update);
 
   // --- Guided prompts (applied as follow-up updates) ---
+  console.log(`Obojima [v0.4] | running level-${level} guided prompts for ${cls.label}`);
   // Each is isolated so one failing prompt can't silently abort the rest, and any
   // error surfaces in the console for diagnosis.
   const safe = async (fn, label) => { try { await fn(); } catch (err) { console.error(`Obojima | ${label} prompt failed:`, err); ui.notifications?.error(`Obojima: the "${label}" step errored — see console (F12).`); } };
