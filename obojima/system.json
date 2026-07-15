@@ -2,7 +2,7 @@
   "id": "obojima",
   "title": "Obojima",
   "description": "A self-contained, Ghibli-flavored tabletop system for the Obojima: Tales from the Tall Grass setting. Includes a character sheet with built-in potion brewing and spirit companions.",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "authors": [
     { "name": "Lia Ko" }
   ],
@@ -31,7 +31,7 @@
     "units": "ft"
   },
   "primaryTokenAttribute": "attributes.hp",
-  "url": "https://github.com/",
-  "manifest": "",
-  "download": ""
+  "url": "https://github.com/lia-ko/obojima-foundry-world",
+  "manifest": "https://raw.githubusercontent.com/lia-ko/obojima-foundry-world/main/obojima/system.json",
+  "download": "https://raw.githubusercontent.com/lia-ko/obojima-foundry-world/main/obojima.zip"
 }
