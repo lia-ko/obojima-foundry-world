@@ -325,10 +325,10 @@ export async function generateAbilityScores(actor) {
     window: { title: "Ability Scores" },
     content: `<p style="font-size:12px;margin:0">How would you like to set your six ability scores?</p>`,
     buttons: [
-      { action: "array", label: "Standard Array", default: true },
-      { action: "roll", label: "Roll 4d6" },
-      { action: "pointbuy", label: "Point Buy" },
-      { action: "cancel", label: "Cancel" }
+      { action: "array", label: "Standard Array", default: true, callback: () => "array" },
+      { action: "roll", label: "Roll 4d6", callback: () => "roll" },
+      { action: "pointbuy", label: "Point Buy", callback: () => "pointbuy" },
+      { action: "cancel", label: "Cancel", callback: () => "cancel" }
     ]
   }).catch(() => "cancel");
   if (!method || method === "cancel") return;
@@ -339,13 +339,20 @@ export async function generateAbilityScores(actor) {
 
   if (method === "pointbuy") {
     const opts = [8, 9, 10, 11, 12, 13, 14, 15];
-    const rows = keys.map((k, i) => row(k, i, opts, () => 8)).join("");
-    const data = await promptForm("Point Buy (27 points)", `<p style="font-size:11px;opacity:.7;margin:0">Each score 8–15, 27-point budget.</p>${rows}`, "Apply");
+    const rows = keys.map((k) => row(k, 0, opts, () => 8)).join("");
+    const info = `<p style="font-size:11px;opacity:.75;margin:0">Each score 8–15. Costs: 8=0, 9=1, 10=2, 11=3, 12=4, 13=5, 14=7, 15=9. Budget: <b>27</b> points.</p>`;
+    const data = await promptForm("Point Buy (27 points)", `${info}${rows}`, "Apply");
     if (!data) return;
-    let cost = 0; const upd = {};
-    for (const k of keys) { const v = num(data[k], 8); cost += POINT_COST[v] ?? 0; upd[`system.abilities.${k}.value`] = v; }
+    let cost = 0; const vals = {};
+    for (const k of keys) { const v = num(data[k], 8); vals[k] = v; cost += POINT_COST[v] ?? 0; }
+    if (cost > 27) {
+      ui.notifications?.warn(`Point buy uses ${cost} points, but the budget is 27. Lower some scores and try again.`);
+      return;
+    }
+    const upd = {};
+    for (const k of keys) upd[`system.abilities.${k}.value`] = vals[k];
     await actor.update(upd);
-    ui.notifications?.info(`Ability scores set (point buy: ${cost}/27 points used).`);
+    ui.notifications?.info(`Ability scores set — point buy (${cost}/27 points used).`);
     return;
   }
 
@@ -569,6 +576,7 @@ export async function castSpell(actor, spell) {
   if (spell.ritual) buttons.push({ action: "ritual", label: "Ritual (no slot)" });
   if (!buttons.length && !spell.ritual) buttons.push({ action: "noslot", label: "Cast without a slot" });
   buttons.push({ action: "cancel", label: "Cancel" });
+  for (const b of buttons) b.callback = () => b.action; // guarantee wait() resolves to the action
 
   const choice = await foundry.applications.api.DialogV2.wait({
     window: { title: `Cast ${spell.name}` },

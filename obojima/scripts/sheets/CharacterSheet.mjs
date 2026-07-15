@@ -81,7 +81,8 @@ export default class ObojimaCharacterSheet extends HandlebarsApplicationMixin(Ac
   #activeTab = "spells";
   #popoverOpen = false;
   #editMode = false;
-  #listenersBound = false;
+  #boundNavClick;
+  #boundFieldChange;
 
   get title() { return this.actor.name; }
 
@@ -142,13 +143,16 @@ export default class ObojimaCharacterSheet extends HandlebarsApplicationMixin(Ac
 
   _onRender(context, options) {
     super._onRender?.(context, options);
-    if (this.#listenersBound) return;
-    this.#listenersBound = true;
-    // Direct listeners on the persistent root element (bound once). Tab switching
-    // goes through a plain click listener rather than the action system so it works
-    // reliably in both view and edit mode, for owners and observers alike.
-    this.element.addEventListener("click", this.#onNavClick.bind(this));
-    this.element.addEventListener("change", this.#onListFieldChange.bind(this));
+    // Direct listeners on the root element. Rebind every render (removing the old
+    // handler first so they never stack) so tab switching keeps working even if a
+    // full re-render swaps out the element. Tab switching goes through a plain click
+    // listener rather than the action system for reliability, in view and edit mode.
+    this.#boundNavClick ??= this.#onNavClick.bind(this);
+    this.#boundFieldChange ??= this.#onListFieldChange.bind(this);
+    this.element.removeEventListener("click", this.#boundNavClick);
+    this.element.addEventListener("click", this.#boundNavClick);
+    this.element.removeEventListener("change", this.#boundFieldChange);
+    this.element.addEventListener("change", this.#boundFieldChange);
   }
 
   /** Switch tabs when a [data-oa-tab] control is clicked. */
