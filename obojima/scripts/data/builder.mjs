@@ -114,7 +114,8 @@ async function promptEquipment(actor, cls) {
   for (const group of groups) {
     if (group.fixed) { group.fixed.forEach(addItem); continue; }
     const idx = await chooseOption("Starting Equipment", `${group.label}:`, group.options.map((o) => o.label));
-    (group.options[idx ?? 0]?.items ?? []).forEach(addItem);
+    if (idx == null) continue; // cancelled — skip this group rather than grant option 0
+    (group.options[idx]?.items ?? []).forEach(addItem);
   }
   await actor.update({ "system.gear": gear, "system.attacks": attacks });
 }
@@ -180,10 +181,14 @@ export async function levelUp(actor) {
     }
   }
 
-  // Features (class + subclass), deduped by name
+  // Features (class + subclass), deduped by name. Subclass grants sweep every
+  // level up to now, so a subclass chosen after its level still gets its earlier
+  // features on the next level-up (existing cards dedupe re-adds).
   const feats = [...(cls.features?.[level] ?? [])].map((f) => ({ ...f, source: cls.label }));
   if (sub && level >= cls.subclassLevel) {
-    for (const f of sub.features?.[level] ?? []) feats.push({ ...f, source: sub.label });
+    for (let l = cls.subclassLevel; l <= level; l++) {
+      for (const f of sub.features?.[l] ?? []) feats.push({ ...f, source: sub.label });
+    }
   }
   const existing = new Set((sys.features ?? []).map((f) => f.name));
   const additions = feats
@@ -195,12 +200,18 @@ export async function levelUp(actor) {
     }));
   if (additions.length) update["system.features"] = [...(sys.features ?? []), ...additions];
 
-  // Subclass-granted spells (e.g. Origami Familiar → Find Familiar, always prepared)
-  if (sub && level >= cls.subclassLevel && sub.grantedSpells?.[level]) {
+  // Subclass-granted spells (e.g. Origami Familiar → Find Familiar, always
+  // prepared) — sweep every level up to now, same as features above.
+  if (sub && level >= cls.subclassLevel) {
     const haveSpells = new Set((sys.spellList ?? []).map((s) => s.name));
-    const spellAdds = sub.grantedSpells[level]
-      .filter((s) => !haveSpells.has(s.name))
-      .map((s) => ({ name: s.name, level: num(s.level), prepared: s.prepared !== false, concentration: !!s.concentration, ritual: !!s.ritual }));
+    const spellAdds = [];
+    for (let l = cls.subclassLevel; l <= level; l++) {
+      for (const s of sub.grantedSpells?.[l] ?? []) {
+        if (haveSpells.has(s.name)) continue;
+        haveSpells.add(s.name);
+        spellAdds.push({ name: s.name, level: num(s.level), prepared: s.prepared !== false, concentration: !!s.concentration, ritual: !!s.ritual });
+      }
+    }
     if (spellAdds.length) update["system.spellList"] = [...(sys.spellList ?? []), ...spellAdds];
   }
 
@@ -361,6 +372,7 @@ export async function generateAbilityScores(actor) {
     const upd = {};
     for (const k of keys) upd[`system.abilities.${k}.value`] = vals[k];
     await actor.update(upd);
+    await clearAncestryASIFlag(actor);
     ui.notifications?.info(`Ability scores set — point buy (${cost}/27 points used).`);
     return;
   }
@@ -376,10 +388,28 @@ export async function generateAbilityScores(actor) {
   const rows = keys.map((k, i) => row(k, i, values, (_k, idx) => values[idx])).join("");
   const data = await promptForm(`Assign scores: ${values.join(", ")}`, `<p style="font-size:11px;opacity:.7;margin:0">Assign each value to an ability.</p>${rows}`, "Apply");
   if (!data) return;
+  const chosen = keys.map((k) => num(data[k], 10));
+  // The per-ability selects don't enforce it, so verify each offered value is
+  // used exactly once — otherwise a player could assign the same 15 twice.
+  const asMultiset = (arr) => [...arr].sort((a, b) => a - b).join(",");
+  if (asMultiset(chosen) !== asMultiset(values)) {
+    ui.notifications?.warn(`Each value must be used exactly once (offered: ${values.join(", ")}).`);
+    return;
+  }
   const upd = {};
-  for (const k of keys) upd[`system.abilities.${k}.value`] = num(data[k], 10);
+  keys.forEach((k, i) => (upd[`system.abilities.${k}.value`] = chosen[i]));
   await actor.update(upd);
+  await clearAncestryASIFlag(actor);
   ui.notifications?.info("Ability scores set.");
+}
+
+/** Regenerating base scores overwrites any applied ancestry ASI; clear the flag
+ *  so the player can re-apply their ancestry to restore the bonus. */
+async function clearAncestryASIFlag(actor) {
+  if (actor.getFlag(SYSTEM_ID, "ancestryApplied")) {
+    await actor.unsetFlag(SYSTEM_ID, "ancestryApplied");
+    ui.notifications?.warn("Scores regenerated — re-apply your ancestry to restore its ability bonus.");
+  }
 }
 
 /* -------------------------------------------- */
@@ -433,7 +463,8 @@ async function promptAncestryVariant(actor, a) {
 
 async function promptOakaMark(actor, a) {
   const idx = await chooseOption(`${a.label}: Oaka Mark`, "Choose your Oaka Mark:", a.oakaMark.map((o) => o.label));
-  const mark = a.oakaMark[idx ?? 0];
+  if (idx == null) return; // cancelled — don't grant the first mark by default
+  const mark = a.oakaMark[idx];
   if (!mark) return;
   const have = new Set((actor.system.spellList ?? []).map((s) => s.name));
   if (!have.has(mark.cantrip)) {
@@ -487,17 +518,24 @@ export async function applyAncestry(actor) {
 export async function applyBackground(actor) {
   const b = BACKGROUNDS[actor.system.details?.background];
   if (!b) { ui.notifications?.warn("Pick a background first."); return; }
+  const key = actor.system.details?.background;
+  const applied = actor.getFlag(SYSTEM_ID, "backgroundApplied");
+  const dedupeJoin = (existing, added) =>
+    [...new Set([...(existing ?? "").split(", ").filter(Boolean), ...(Array.isArray(added) ? added : String(added).split(", "))])].join(", ");
+
   const upd = {};
   for (const s of b.skills) upd[`system.skills.${s}.proficient`] = Math.max(1, num(actor.system.skills[s]?.proficient));
-  if (b.tools) upd["system.proficiencies.tools"] = [actor.system.proficiencies?.tools, b.tools].filter(Boolean).join(", ");
-  if (b.languages) upd["system.proficiencies.languages"] = [actor.system.proficiencies?.languages, b.languages].filter(Boolean).join(", ");
+  if (b.tools) upd["system.proficiencies.tools"] = dedupeJoin(actor.system.proficiencies?.tools, b.tools);
+  if (b.languages) upd["system.proficiencies.languages"] = dedupeJoin(actor.system.proficiencies?.languages, b.languages);
   const gear = [...(actor.system.gear ?? [])];
   for (const it of b.equipment ?? []) if (!gear.some((g) => g.name === it.name)) gear.push({ name: it.name, weight: num(it.weight), attuned: false });
   upd["system.gear"] = gear;
-  if (b.gold) upd["system.currency.gp"] = num(actor.system.currency?.gp) + b.gold;
+  // Gold is additive — grant it only the first time this background is applied.
+  if (b.gold && applied !== key) upd["system.currency.gp"] = num(actor.system.currency?.gp) + b.gold;
   await actor.update(upd);
   if (b.feature) await appendFeature(actor, { name: b.feature.name, source: b.label, description: b.feature.desc });
-  ui.notifications?.info(`${b.label} background applied.`);
+  await actor.setFlag(SYSTEM_ID, "backgroundApplied", key);
+  ui.notifications?.info(applied === key ? `${b.label} already applied — gold not re-granted.` : `${b.label} background applied.`);
 }
 
 /** Pick a feat: apply simple ASI/skill grants, record the feat as a card. */
@@ -505,6 +543,12 @@ export async function pickFeat(actor) {
   const idx = await chooseOption("Add a Feat", "Choose a feat:", FEATS.map((f) => f.name));
   if (idx == null) return;
   const feat = FEATS[idx];
+  // Guard against re-applying the same feat's ASI/skills (the card dedupes, but
+  // the +1 would silently stack on a second pick of the same feat).
+  if ((actor.system.features ?? []).some((f) => f.name === `Feat: ${feat.name}`)) {
+    ui.notifications?.warn(`${feat.name} is already taken.`);
+    return;
+  }
   const upd = {};
   const cur = (k) => num(actor.system.abilities[k]?.value, 10);
   if (feat.asi?.ability) upd[`system.abilities.${feat.asi.ability}.value`] = cur(feat.asi.ability) + 1;
@@ -688,6 +732,13 @@ export async function shortRest(actor) {
 export async function arcaneRecovery(actor) {
   const sys = actor.system;
   if (sys.details?.className !== "wizard") { ui.notifications?.warn("Arcane Recovery is a Wizard feature."); return; }
+  // Once per day: block if the feature's use is already spent.
+  const arIdx = (sys.features ?? []).findIndex((f) => f.name === "Arcane Recovery");
+  const arTracked = arIdx >= 0 && num(sys.features[arIdx].uses?.max) > 0;
+  if (arTracked && num(sys.features[arIdx].uses?.value) <= 0) {
+    ui.notifications?.warn("Arcane Recovery already used — finish a long rest first.");
+    return;
+  }
   const budget = Math.ceil(num(sys.details?.level, 1) / 2);
   const rows = [];
   for (let L = 1; L <= 5; L++) {
@@ -707,7 +758,14 @@ export async function arcaneRecovery(actor) {
     if (n > 0) upd[`system.spells.spell${r.L}.value`] = num(sys.spells[`spell${r.L}`].value) + n;
   }
   if (total > budget) { ui.notifications?.warn(`That totals ${total} slot levels but your budget is ${budget}. Nothing recovered.`); return; }
-  if (Object.keys(upd).length) await actor.update(upd);
+  if (Object.keys(upd).length) {
+    if (arTracked) { // spend the daily use alongside the recovered slots
+      const f2 = foundry.utils.duplicate(sys.features);
+      f2[arIdx].uses.value = Math.max(0, num(f2[arIdx].uses.value) - 1);
+      upd["system.features"] = f2;
+    }
+    await actor.update(upd);
+  }
   ui.notifications?.info(`Arcane Recovery — recovered ${total} slot level${total === 1 ? "" : "s"}.`);
 }
 
