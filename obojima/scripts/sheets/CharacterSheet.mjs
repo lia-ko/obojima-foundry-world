@@ -14,7 +14,7 @@ import { CLASSES, CLASS_OPTIONS, subclassOptions } from "../data/classes.mjs";
 import { isCasterClass } from "../data/spells.mjs";
 import { ANCESTRY_OPTIONS } from "../data/ancestries.mjs";
 import { BACKGROUND_OPTIONS } from "../data/backgrounds.mjs";
-import { levelUp, pickSpells, generateAbilityScores, applyAncestry, applyBackground, pickFeat, longRest, shortRest, castSpell, arcaneRecovery, useFeature } from "../data/builder.mjs";
+import { levelUp, pickSpells, generateAbilityScores, applyAncestry, applyBackground, pickFeat, longRest, shortRest, castSpell, arcaneRecovery, useFeature, readFields } from "../data/builder.mjs";
 import * as Brewing from "../data/brewing.mjs";
 import * as Spirit from "../data/spirit.mjs";
 
@@ -50,6 +50,8 @@ export default class ObojimaCharacterSheet extends HandlebarsApplicationMixin(Ac
       toggleConcentration: ObojimaCharacterSheet.#onToggleConcentration,
       toggleSaveProf: ObojimaCharacterSheet.#onToggleSaveProf,
       cycleSkillProf: ObojimaCharacterSheet.#onCycleSkillProf,
+      hpDamage: ObojimaCharacterSheet.#onHpDamage,
+      hpHeal: ObojimaCharacterSheet.#onHpHeal,
       levelUp: ObojimaCharacterSheet.#onLevelUp,
       pickSpells: ObojimaCharacterSheet.#onPickSpells,
       arcaneRecovery: ObojimaCharacterSheet.#onArcaneRecovery,
@@ -153,6 +155,22 @@ export default class ObojimaCharacterSheet extends HandlebarsApplicationMixin(Ac
     this.element.addEventListener("click", this.#boundNavClick);
     this.element.removeEventListener("change", this.#boundFieldChange);
     this.element.addEventListener("change", this.#boundFieldChange);
+    this.#mergeHeader();
+  }
+
+  /**
+   * Single-bar look: move our action header (chips + rest/edit/status) into
+   * Foundry's native window header, right after the title and before the window
+   * controls — so the sheet shows one title bar instead of two stacked ones.
+   */
+  #mergeHeader() {
+    const winHeader = this.element.querySelector(".window-header");
+    const oaHeader = this.element.querySelector(".oa-root > .oa-header");
+    if (!winHeader || !oaHeader) return;
+    // Drop any copy relocated on a previous render, then re-place the fresh one.
+    winHeader.querySelectorAll(":scope > .oa-header").forEach((el) => el.remove());
+    const title = winHeader.querySelector(".window-title");
+    if (title) title.after(oaHeader); else winHeader.appendChild(oaHeader);
   }
 
   /** Switch tabs when a [data-oa-tab] control is clicked. */
@@ -250,6 +268,51 @@ export default class ObojimaCharacterSheet extends HandlebarsApplicationMixin(Ac
     const key = target.dataset.key;
     const cur = num(this.actor.system.skills[key]?.proficient);
     await this.actor.update({ [`system.skills.${key}.proficient`]: (cur + 1) % 3 });
+  }
+
+  /* ---------------------------------------- */
+  /*  Hit points: damage / heal               */
+  /* ---------------------------------------- */
+
+  static #onHpDamage() { return this.#adjustHp(-1); }
+  static #onHpHeal() { return this.#adjustHp(1); }
+
+  /** Prompt for an amount and apply it to HP. Damage soaks temp HP first; heal caps at max. */
+  async #adjustHp(sign) {
+    const label = sign < 0 ? "Damage" : "Heal";
+    const amount = await ObojimaCharacterSheet.#promptAmount(label);
+    if (!amount) return;
+    const hp = this.actor.system.attributes?.hp ?? {};
+    const max = num(hp.max);
+    let value = num(hp.value);
+    let temp = num(hp.temp);
+    if (sign < 0) {
+      let dmg = amount;
+      if (temp > 0) { const soak = Math.min(temp, dmg); temp -= soak; dmg -= soak; }
+      value = Math.max(0, value - dmg);
+    } else {
+      value = value + amount;
+      if (max > 0) value = Math.min(value, max);
+    }
+    await this.actor.update({ "system.attributes.hp.value": value, "system.attributes.hp.temp": temp });
+  }
+
+  static async #promptAmount(label) {
+    const DV2 = foundry.applications.api.DialogV2;
+    // DialogV2 buttons sit outside the content form, so read the DOM via readFields.
+    const content = `<div class="oa-build-form" style="padding:4px 2px">
+      <label style="display:flex;flex-direction:column;gap:5px;font-size:13px">${label} amount
+      <input type="number" name="n" value="1" min="0" autofocus style="font-size:16px;padding:5px;text-align:center"></label></div>`;
+    const result = await DV2.wait({
+      window: { title: `${label} — Hit Points` },
+      content,
+      buttons: [
+        { action: "ok", label, default: true, callback: (event, button, dialog) => readFields(dialog?.element ?? null) },
+        { action: "cancel", label: "Cancel", callback: () => null }
+      ]
+    }).catch(() => null);
+    const n = result && result !== "cancel" ? num(result.n) : 0;
+    return n > 0 ? n : 0;
   }
 
   /* ---------------------------------------- */

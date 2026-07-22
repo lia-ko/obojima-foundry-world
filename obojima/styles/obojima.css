@@ -51,13 +51,36 @@
   --oa-panel: #ffffff;
   --oa-panelln: #dfe9dd;
   --oa-accent: #c4870f;
+  --oa-accent-deep: #a06d09;
   --oa-onaccent: #2c3f1d;
+  --oa-faint: #6d8375;
   --oa-soft: #eef4e4;
   --oa-softln: #cfe0bb;
   --oa-hp: #c25b3a;
+  --oa-hp-soft: #fbe6da;
   --oa-font: 'Shantell Sans', ui-sans-serif, system-ui, sans-serif;
   --oa-hand: 'Architects Daughter', var(--oa-font);
   --oa-serif: 'Spectral', Georgia, serif;
+}
+
+/* Window shell: our action header is relocated (in JS) into Foundry's native
+   window header so the sheet has ONE title bar. Style the merged bar here. */
+.obojima .window-header {
+  background: #1f483a;
+  border-bottom: none;
+  min-height: 42px;
+  align-items: center;
+  gap: 8px;
+  overflow: visible;
+}
+.obojima .window-header .window-title {
+  flex: 0 0 auto;
+  font-family: var(--oa-serif); font-style: italic; font-weight: 400;
+  color: #eaf3ee; text-shadow: 0 1px 2px rgba(0,0,0,.25);
+}
+/* Our header, once moved into the native bar: fill the middle, no bar chrome. */
+.obojima .window-header .oa-header {
+  flex: 1; min-width: 0; min-height: 0; background: transparent; padding: 0 4px 0 6px;
 }
 
 /* Window shell: let the meadow background fill the content area. */
@@ -173,8 +196,8 @@
   background: rgba(255,255,255,.92); border: 1px solid rgba(255,255,255,.8);
   border-radius: 14px; box-shadow: 0 8px 24px rgba(40,80,90,.16);
 }
-.obojima .oa-band { display: flex; align-items: center; gap: 12px; padding: 10px 12px; }
-.obojima .oa-prof-panel { width: 340px; flex: none; padding: 11px 14px; overflow: auto; }
+.obojima .oa-band { display: flex; align-items: stretch; gap: 14px; padding: 13px 14px; }
+.obojima .oa-prof-panel { width: 320px; flex: none; padding: 12px 14px; overflow: auto; }
 .obojima .oa-detail { flex: 1; min-width: 0; padding: 13px; display: flex; flex-direction: column; }
 .obojima .oa-detail-body { flex: 1; min-height: 0; overflow: auto; }
 
@@ -182,24 +205,30 @@
 
 
 /* ===== _master.css ===== */
-/* Band (top strip): identity, vitals, abilities — and the Saves & Skills panel */
+/* Band (tall portrait spanning the info row + abilities strip) + Saves & Skills */
 
-/* Identity */
-.obojima .oa-band-avatar {
-  width: 60px; height: 60px; flex: none; object-fit: cover; border-radius: 12px;
-  border: 2px solid #fff; box-shadow: 0 4px 10px rgba(0,0,0,.14);
+/* Tall portrait on the left, aligned to the full height of the two right-side rows */
+.obojima .oa-portrait {
+  width: 200px; flex: none; align-self: stretch; min-height: 236px; object-fit: cover;
+  border-radius: 16px; border: 3px solid #fff; box-shadow: 0 8px 20px rgba(0,0,0,.22);
 }
 .obojima .oa-band-avatar[data-action] { cursor: pointer; }
-.obojima .oa-band-id { flex: none; width: 156px; }
-.obojima .oa-band-name { font-family: var(--oa-hand); font-size: 20px; color: #214a52; line-height: 1.05; width: 100%; }
-.obojima .oa-band-sub { font-family: var(--oa-serif); font-style: italic; font-size: 10.5px; color: var(--oa-muted); }
-.obojima .oa-band-cls { font-size: 10.5px; color: var(--oa-muted); margin-top: 1px; display: flex; align-items: center; gap: 4px; flex-wrap: wrap; }
+.obojima .oa-topright { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 11px; }
+.obojima .oa-inforow { display: flex; gap: 10px; align-items: stretch; }
+.obojima .oa-idtext { flex: none; width: 200px; min-width: 0; display: flex; flex-direction: column; justify-content: center; }
+.obojima .oa-band-name { font-family: var(--oa-hand); font-size: 26px; color: #1e4750; line-height: 1.02; width: 100%; }
+.obojima .oa-band-sub { font-family: var(--oa-serif); font-style: italic; font-size: 12px; color: var(--oa-muted); margin-top: 2px; }
+.obojima .oa-band-cls { font-size: 11px; color: var(--oa-muted); margin-top: 2px; display: flex; align-items: center; gap: 4px; flex-wrap: wrap; }
 .obojima .oa-band-cls b { color: var(--oa-ink); }
-.obojima .oa-cls-in { width: 80px; }
 .obojima .oa-cls-sel { max-width: 148px; font-size: 11px; border-bottom: 1px solid var(--oa-softln); margin: 1px 0; }
 .obojima .oa-lv-badge { font-weight: 700; }
-.obojima .oa-levelup-btn {
+.obojima .oa-oaka {
   display: inline-flex; align-items: center; gap: 5px; margin-top: 6px;
+  font-size: 11px; font-weight: 700; color: var(--oa-accent-deep);
+  background: #fbf1dc; border: 1px solid #ecd7a3; border-radius: 999px; padding: 2px 10px;
+}
+.obojima .oa-levelup-btn {
+  display: inline-flex; align-items: center; gap: 5px; margin-top: 8px;
   background: #edc25c; color: #3c3414; border: 1px solid #dcab3e;
   border-radius: 9px; padding: 5px 12px; font-weight: 800; font-size: 11px;
 }
@@ -208,45 +237,84 @@
   box-shadow: 0 2px 10px rgba(196,135,15,.45); font-size: 12px; padding: 7px 14px;
 }
 .obojima .oa-levelup-btn[disabled] { opacity: .5; cursor: default; box-shadow: none; }
-.obojima .oa-build-hint { font-size: 9.5px; color: var(--oa-muted); margin-top: 4px; max-width: 168px; line-height: 1.35; }
-.obojima .oa-mini-btn { display: inline-block; margin-top: 6px; font-size: 10px; font-weight: 700; color: var(--oa-muted); background: var(--oa-soft); border: 1px solid var(--oa-softln); border-radius: 999px; padding: 3px 10px; }
+.obojima .oa-build-hint { font-size: 9.5px; color: var(--oa-muted); margin-top: 4px; max-width: 200px; line-height: 1.35; }
+.obojima .oa-mini-btn { display: inline-block; margin-top: 6px; margin-left: 6px; font-size: 10px; font-weight: 700; color: var(--oa-muted); background: var(--oa-soft); border: 1px solid var(--oa-softln); border-radius: 999px; padding: 3px 10px; }
 
-/* Vitals */
-.obojima .oa-vitals { display: flex; gap: 6px; flex: none; }
-.obojima .oa-stat { width: 54px; text-align: center; background: var(--oa-soft); border-radius: 9px; padding: 6px 0; }
-.obojima .oa-stat-hp { background: #fbe6da; width: 66px; }
-.obojima .oa-stat-label { font-size: 8px; color: var(--oa-muted); letter-spacing: .05em; }
-.obojima .oa-stat-val { font-weight: 800; font-size: 16px; color: var(--oa-ink); }
-.obojima .oa-stat-hp .oa-stat-val { color: var(--oa-hp); }
-.obojima .oa-stat-sub { font-size: 9px; }
+/* Hero vitals: big HP module + a compact AC/Init/Speed/Prof cluster */
+.obojima .oa-hero { flex: 1; min-width: 0; display: flex; gap: 10px; align-items: stretch; }
+.obojima .oa-hp {
+  flex: 1; min-width: 0; background: #fff; border: 1px solid var(--oa-hp-soft);
+  border-radius: 12px; padding: 9px 13px 10px; display: flex; flex-direction: column;
+}
+.obojima .oa-hp-top { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; }
+.obojima .oa-hp-lab { font-size: 10px; font-weight: 800; letter-spacing: .1em; color: var(--oa-hp); text-transform: uppercase; }
+.obojima .oa-hp-temp { font-size: 11px; font-weight: 700; color: #3d6ea8; }
+.obojima .oa-hp-tempedit { font-size: 10px; color: var(--oa-muted); }
+.obojima .oa-hp-big { font-family: var(--oa-hand); font-size: 30px; color: var(--oa-hp); line-height: 1.05; margin-top: 1px; }
+.obojima .oa-hp-big span { font-size: 16px; color: #c99; font-family: var(--oa-font); font-weight: 700; }
+.obojima .oa-hp-edit { display: flex; align-items: center; gap: 6px; margin-top: 4px; font-size: 14px; color: var(--oa-hp); }
+.obojima .oa-hp-bar { height: 9px; border-radius: 999px; background: #f1d8cd; margin-top: 8px; overflow: hidden; display: flex; }
+.obojima .oa-hp-bar > i { height: 100%; background: linear-gradient(90deg,#d06a45,#c25b3a); border-radius: 999px 0 0 999px; }
+.obojima .oa-hp-bar > u { height: 100%; background: repeating-linear-gradient(45deg,#8bb6e6 0 4px,#a9cbf0 4px 8px); }
+.obojima .oa-hp-adj { display: flex; gap: 6px; margin-top: auto; padding-top: 9px; }
+.obojima .oa-hp-btn { flex: 1; text-align: center; font-size: 12px; font-weight: 800; border-radius: 8px; padding: 5px 0; border: 1px solid var(--oa-hp-soft); background: #fff5f1; color: var(--oa-hp); }
+.obojima .oa-hp-btn:hover { background: #ffe9e0; }
 
-.obojima .oa-band-divider { width: 1px; align-self: stretch; background: var(--oa-panelln); margin: 2px 2px; }
+.obojima .oa-vitals { display: grid; grid-template-columns: repeat(2,58px); grid-auto-rows: 1fr; gap: 7px; flex: none; }
+.obojima .oa-tile { background: var(--oa-soft); border-radius: 10px; text-align: center; padding: 6px 0; display: flex; flex-direction: column; justify-content: center; gap: 1px; }
+.obojima .oa-tile-k { font-size: 9px; font-weight: 700; letter-spacing: .07em; color: var(--oa-muted); text-transform: uppercase; }
+.obojima .oa-tile-v { font-family: var(--oa-hand); font-size: 20px; color: var(--oa-ink); line-height: 1.05; }
+.obojima .oa-tile-ac .oa-tile-v { color: #2f6d8c; }
+.obojima .oa-tile .oa-stat-input { width: 42px; margin: 0 auto; text-align: center; }
 
-/* Abilities row */
-.obojima .oa-abil-row { display: flex; gap: 4px; flex: 1; justify-content: flex-end; }
-.obojima .oa-ability { width: 46px; flex: none; text-align: center; border: 1px solid var(--oa-panelln); border-radius: 8px; padding: 5px 0; }
-.obojima .oa-ability.is-prof { border-color: var(--oa-softln); background: var(--oa-soft); }
-.obojima .oa-ability-key { font-size: 8px; color: var(--oa-muted); display: flex; align-items: center; justify-content: center; gap: 2px; }
-.obojima .oa-ability.is-prof .oa-ability-key { color: var(--oa-accent); }
-.obojima .oa-ability-mod { font-weight: 800; font-size: 15px; display: block; width: 100%; text-align: center; }
-.obojima .oa-ability-score { font-size: 8px; color: var(--oa-muted); }
+/* Abilities strip: one legible roll-card per ability (Check + Save) */
+.obojima .oa-abil { display: grid; grid-template-columns: repeat(6,1fr); gap: 9px; }
+.obojima .oa-ability { background: #fff; border: 1px solid var(--oa-panelln); border-radius: 13px; padding: 9px 6px 8px; text-align: center; }
+.obojima .oa-ability.is-prof { border-color: var(--oa-softln); box-shadow: 0 0 0 2px rgba(196,135,15,.13); }
+.obojima .oa-ability-top { display: flex; align-items: baseline; justify-content: center; gap: 6px; }
+.obojima .oa-ability-abbr { font-size: 11px; font-weight: 800; letter-spacing: .07em; color: var(--oa-muted); display: inline-flex; align-items: center; gap: 3px; }
+.obojima .oa-ability.is-prof .oa-ability-abbr { color: var(--oa-accent-deep); }
+.obojima .oa-ability-score { font-size: 11px; color: var(--oa-faint); font-weight: 700; }
+.obojima .oa-ability-input { width: 38px; text-align: center; font-size: 12px; }
+.obojima .oa-ability-check {
+  display: block; width: 100%; margin: 3px 0 7px; text-align: center;
+  font-family: var(--oa-hand); font-size: 28px; line-height: 1; color: var(--oa-ink);
+}
+.obojima .oa-ability-check small { display: block; font-family: var(--oa-font); font-size: 8px; font-weight: 800; letter-spacing: .14em; color: var(--oa-faint); text-transform: uppercase; margin-bottom: 1px; }
+.obojima .oa-ability-check:hover { color: var(--oa-accent-deep); }
+.obojima .oa-ability-save {
+  display: flex; align-items: center; justify-content: center; gap: 5px; width: 100%;
+  font-size: 12px; font-weight: 800; color: var(--oa-muted);
+  background: var(--oa-soft); border-radius: 999px; padding: 3px 0;
+}
+.obojima .oa-ability-save .oa-save-t { font-size: 8px; font-weight: 800; letter-spacing: .1em; color: var(--oa-faint); text-transform: uppercase; }
+.obojima .oa-ability-save:hover { background: #e4eed3; }
+.obojima .oa-ability.is-prof .oa-ability-save { background: #fbf1dc; color: var(--oa-accent-deep); }
+.obojima .oa-ability.is-prof .oa-ability-save .oa-save-t { color: var(--oa-accent); }
+.obojima .oa-save-toggle { width: 8px; height: 8px; border-radius: 50%; border: 1.5px solid var(--oa-softln); cursor: pointer; display: inline-block; }
+.obojima .oa-save-toggle.on { background: var(--oa-accent); border-color: var(--oa-accent); }
 
 /* Saves & Skills panel */
 .obojima .oa-section-title {
-  font-family: var(--oa-hand); font-size: 17px; color: var(--oa-accent); margin-bottom: 4px;
+  font-family: var(--oa-hand); font-size: 18px; color: var(--oa-accent); margin-bottom: 8px;
 }
-.obojima .oa-saves { font-size: 11px; color: var(--oa-ink); margin-bottom: 3px; }
-.obojima .oa-saves-label { font-weight: 700; color: var(--oa-muted); margin-right: 4px; }
-.obojima .oa-saves b { color: var(--oa-accent); }
-.obojima .oa-prof-meta { font-size: 10px; color: var(--oa-muted); margin-bottom: 10px; border-bottom: 1px solid var(--oa-panelln); padding-bottom: 8px; }
-.obojima .oa-prof-meta .oa-sep { opacity: .5; margin: 0 3px; }
-.obojima .oa-skills { display: grid; grid-template-columns: 1fr 1fr; gap: 2px 14px; font-size: 10.5px; line-height: 1.5; }
-.obojima .oa-skill { display: flex; align-items: baseline; gap: 5px; }
-.obojima .oa-skill.is-prof { color: var(--oa-accent); }
-.obojima .oa-skill-pip { flex: none; color: var(--oa-muted); }
+.obojima .oa-prof-meta {
+  font-size: 11px; color: var(--oa-muted); display: flex; gap: 10px; align-items: center;
+  padding-bottom: 9px; margin-bottom: 9px; border-bottom: 1px solid var(--oa-panelln);
+}
+.obojima .oa-prof-meta b { color: var(--oa-accent-deep); }
+.obojima .oa-pp { margin-left: auto; flex: none; background: var(--oa-soft); border-radius: 999px; padding: 2px 10px; font-weight: 700; }
+.obojima .oa-pp b { color: var(--oa-ink); }
+.obojima .oa-skills { display: grid; grid-template-columns: 1fr 1fr; gap: 2px 16px; font-size: 12px; }
+.obojima .oa-skill { display: flex; align-items: center; gap: 6px; padding: 1px 0; color: var(--oa-muted); line-height: 1.4; }
+.obojima .oa-skill-pip { flex: none; width: 12px; text-align: center; padding: 0; line-height: 1; font-size: 11px; color: var(--oa-faint); }
+.obojima .oa-skill-name { flex: 1; min-width: 0; text-align: left; padding: 0; font-size: 12px; line-height: 1.4; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: var(--oa-muted); }
+.obojima .oa-skill-name:hover { color: var(--oa-accent-deep); }
+.obojima .oa-skill-mod { flex: none; margin-left: auto; font-size: 12px; font-weight: 800; font-variant-numeric: tabular-nums; color: var(--oa-ink); }
 .obojima .oa-skill.is-prof .oa-skill-pip { color: var(--oa-accent); }
-.obojima .oa-skill-name { flex: 1; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.obojima .oa-skill-mod { flex: none; font-weight: 600; margin-left: auto; }
+.obojima .oa-skill.is-prof .oa-skill-name { color: var(--oa-ink); }
+.obojima .oa-skill.is-prof .oa-skill-mod { color: var(--oa-accent-deep); }
+.obojima .oa-skill.is-exp .oa-skill-pip { color: var(--oa-accent); }
 
 /* Bio details grid (moved off the band) */
 .obojima .oa-details-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 6px 12px; margin-bottom: 12px; }
@@ -263,14 +331,14 @@
 /* Detail column: tabs, spells, features, inventory */
 
 .obojima .oa-tabs {
-  display: flex; gap: 5px; flex-wrap: wrap; border-bottom: 1px solid var(--oa-panelln);
-  padding-bottom: 11px; margin-bottom: 13px;
+  display: flex; gap: 4px; flex-wrap: wrap; margin-bottom: 12px;
 }
 .obojima .oa-tab-btn {
-  padding: 7px 13px; border-radius: 999px; font-size: 12px; font-weight: 600;
+  padding: 6px 13px; border-radius: 999px; font-size: 12px; font-weight: 700;
   color: var(--oa-muted); white-space: nowrap; transition: all .15s;
 }
-.obojima .oa-tab-btn.active { font-weight: 800; background: #edc25c; color: #3c3414; }
+.obojima .oa-tab-btn:not(.active):hover { background: var(--oa-soft); }
+.obojima .oa-tab-btn.active { font-weight: 800; background: var(--oa-accent); color: #fff; }
 
 .obojima .oa-tab { display: none; }
 .obojima .oa-tab.active { display: block; }

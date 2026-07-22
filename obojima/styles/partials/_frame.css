@@ -69,8 +69,8 @@
   background: rgba(255,255,255,.92); border: 1px solid rgba(255,255,255,.8);
   border-radius: 14px; box-shadow: 0 8px 24px rgba(40,80,90,.16);
 }
-.obojima .oa-band { display: flex; align-items: center; gap: 12px; padding: 10px 12px; }
-.obojima .oa-prof-panel { width: 340px; flex: none; padding: 11px 14px; overflow: auto; }
+.obojima .oa-band { display: flex; align-items: stretch; gap: 14px; padding: 13px 14px; }
+.obojima .oa-prof-panel { width: 320px; flex: none; padding: 12px 14px; overflow: auto; }
 .obojima .oa-detail { flex: 1; min-width: 0; padding: 13px; display: flex; flex-direction: column; }
 .obojima .oa-detail-body { flex: 1; min-height: 0; overflow: auto; }
 

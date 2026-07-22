@@ -80,10 +80,13 @@ export function identityData(actor) {
   const subclass = clsDef?.subclasses?.[d.subclass]?.label ?? "";
   const species = ANCESTRIES[d.ancestry]?.label ?? d.species ?? "";
   const subline2 = [species, d.pronouns, d.alignment].filter(Boolean).join(" · ");
+  // Surface an Oaka Mark (elf) as an identity badge, if the character has one.
+  const oakaFeat = (actor.system.features ?? []).find((f) => /^Oaka Mark/i.test(f.name ?? ""));
   return {
     name: actor.name,
     img: actor.img,
     species,
+    oaka: oakaFeat?.name ?? "",
     subline: subline2,
     alignment: d.alignment ?? "",
     className,
@@ -97,9 +100,13 @@ export function identityData(actor) {
 export function coreStats(actor) {
   const a = actor.system.attributes ?? {};
   const hp = a.hp ?? {};
+  const hpVal = num(hp.value), hpMax = num(hp.max), hpTemp = num(hp.temp);
+  const denom = hpMax + hpTemp;
   return {
     ac: num(a.ac),
-    hp: { value: num(hp.value), max: num(hp.max), temp: num(hp.temp) },
+    hp: { value: hpVal, max: hpMax, temp: hpTemp },
+    hpPct: hpMax > 0 ? Math.max(0, Math.min(100, Math.round((hpVal / hpMax) * 100))) : 0,
+    hpTempPct: denom > 0 ? Math.max(0, Math.min(100, Math.round((hpTemp / denom) * 100))) : 0,
     init: signed(a.init),
     speed: num(a.speed),
     prof: num(a.prof),

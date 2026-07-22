@@ -414,6 +414,15 @@ async function promptAncestryASI(actor, a) {
   await actor.update(upd);
 }
 
+async function promptAncestryVariant(actor, a) {
+  const v = a.variants;
+  const idx = await chooseOption(`${a.label}: ${v.prompt}`, "Choose your variant:", v.options.map((o) => o.label));
+  const opt = v.options[idx ?? 0];
+  if (!opt) return;
+  if (opt.speed != null) await actor.update({ "system.attributes.speed": opt.speed });
+  if (opt.trait) await addTraitCards(actor, [opt.trait], a.label);
+}
+
 async function promptOakaMark(actor, a) {
   const idx = await chooseOption(`${a.label}: Oaka Mark`, "Choose your Oaka Mark:", a.oakaMark.map((o) => o.label));
   const mark = a.oakaMark[idx ?? 0];
@@ -443,6 +452,7 @@ export async function applyAncestry(actor) {
     const s = {}; chosen.forEach((k) => (s[`system.skills.${k}.proficient`] = 1));
     if (Object.keys(s).length) await actor.update(s);
   }
+  if (a.variants) await promptAncestryVariant(actor, a);
   if (a.oakaMark) await promptOakaMark(actor, a);
   ui.notifications?.info(`${a.label} traits applied.`);
 }

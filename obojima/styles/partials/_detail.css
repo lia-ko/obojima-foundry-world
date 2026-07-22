@@ -1,14 +1,14 @@
 /* Detail column: tabs, spells, features, inventory */
 
 .obojima .oa-tabs {
-  display: flex; gap: 5px; flex-wrap: wrap; border-bottom: 1px solid var(--oa-panelln);
-  padding-bottom: 11px; margin-bottom: 13px;
+  display: flex; gap: 4px; flex-wrap: wrap; margin-bottom: 12px;
 }
 .obojima .oa-tab-btn {
-  padding: 7px 13px; border-radius: 999px; font-size: 12px; font-weight: 600;
+  padding: 6px 13px; border-radius: 999px; font-size: 12px; font-weight: 700;
   color: var(--oa-muted); white-space: nowrap; transition: all .15s;
 }
-.obojima .oa-tab-btn.active { font-weight: 800; background: #edc25c; color: #3c3414; }
+.obojima .oa-tab-btn:not(.active):hover { background: var(--oa-soft); }
+.obojima .oa-tab-btn.active { font-weight: 800; background: var(--oa-accent); color: #fff; }
 
 .obojima .oa-tab { display: none; }
 .obojima .oa-tab.active { display: block; }
