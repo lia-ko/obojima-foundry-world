@@ -226,6 +226,9 @@ export async function levelUp(actor) {
   if (level === 1) await safe(() => promptEquipment(actor, cls), "equipment");
   if (subKey && sub && level === cls.subclassLevel) await safe(() => promptSubclass(actor, classKey, sub), "subclass");
   if (cls.asiLevels?.includes(level)) await safe(() => promptASI(actor), "ability score improvement");
+  // Casters (Druid/Wizard) learn spells as part of leveling — otherwise the
+  // character gains slots with an empty spellbook and nothing to cast.
+  if (spellsForClass(classKey).length) await safe(() => pickSpells(actor), "learn spells");
 
   ui.notifications?.info(`${cls.label} advanced to level ${level}.`);
   return level;
