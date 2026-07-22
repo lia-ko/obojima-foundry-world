@@ -189,7 +189,11 @@ export default class ObojimaCharacterSheet extends HandlebarsApplicationMixin(Ac
   /* ---------------------------------------- */
 
   async #rollCheck(mod, flavor) {
-    const roll = await new Roll(`1d20 ${signed(mod)}`).evaluate();
+    // Build the formula with an ASCII operator — signed() uses a Unicode minus
+    // (−, U+2212) for display, which Foundry's dice parser can't read, so a
+    // negative modifier (e.g. −1) would fail to roll.
+    const m = num(mod);
+    const roll = await new Roll(`1d20 ${m < 0 ? "-" : "+"} ${Math.abs(m)}`).evaluate();
     await roll.toMessage({ speaker: ChatMessage.getSpeaker({ actor: this.actor }), flavor });
     return roll;
   }
@@ -212,12 +216,19 @@ export default class ObojimaCharacterSheet extends HandlebarsApplicationMixin(Ac
         const speaker = ChatMessage.getSpeaker({ actor: this.actor });
         const mod = attackAbilityMod(sys, atk.ability);
         const manual = String(atk.toHit ?? "").trim();
-        const hitBonus = manual || signed(mod + (atk.proficient ? num(sys.attributes?.prof) : 0));
-        const hitFormula = /^[+-]/.test(hitBonus) ? `1d20${hitBonus}` : `1d20+${num(hitBonus)}`;
+        let hitFormula;
+        if (manual) {
+          // Normalise a user-typed bonus; accept ASCII +/- (also a Unicode minus).
+          const norm = manual.replace(/−/g, "-");
+          hitFormula = /^[+-]/.test(norm) ? `1d20 ${norm}` : `1d20 + ${norm}`;
+        } else {
+          const b = mod + (atk.proficient ? num(sys.attributes?.prof) : 0);
+          hitFormula = `1d20 ${b < 0 ? "-" : "+"} ${Math.abs(b)}`;
+        }
         const hitRoll = await new Roll(hitFormula).evaluate();
         await hitRoll.toMessage({ speaker, flavor: `<strong>${atk.name}</strong> — attack` });
         if (atk.damage) {
-          const dmgFormula = mod ? `${atk.damage} ${signed(mod)}` : atk.damage;
+          const dmgFormula = mod ? `${atk.damage} ${mod < 0 ? "-" : "+"} ${Math.abs(mod)}` : atk.damage;
           const dmgRoll = await new Roll(dmgFormula).evaluate();
           await dmgRoll.toMessage({ speaker, flavor: `<strong>${atk.name}</strong> — damage` });
         }
@@ -302,7 +313,7 @@ export default class ObojimaCharacterSheet extends HandlebarsApplicationMixin(Ac
     // DialogV2 buttons sit outside the content form, so read the DOM via readFields.
     const content = `<div class="oa-build-form" style="padding:4px 2px">
       <label style="display:flex;flex-direction:column;gap:5px;font-size:13px">${label} amount
-      <input type="number" name="n" value="1" min="0" autofocus style="font-size:16px;padding:5px;text-align:center"></label></div>`;
+      <input type="number" name="n" value="1" min="0" step="1" autofocus style="font-size:16px;padding:5px;text-align:center"></label></div>`;
     const result = await DV2.wait({
       window: { title: `${label} — Hit Points` },
       content,
@@ -311,7 +322,7 @@ export default class ObojimaCharacterSheet extends HandlebarsApplicationMixin(Ac
         { action: "cancel", label: "Cancel", callback: () => null }
       ]
     }).catch(() => null);
-    const n = result && result !== "cancel" ? num(result.n) : 0;
+    const n = result && result !== "cancel" ? Math.floor(num(result.n)) : 0;
     return n > 0 ? n : 0;
   }
 

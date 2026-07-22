@@ -336,6 +336,7 @@
 .obojima .oa-tab-btn {
   padding: 6px 13px; border-radius: 999px; font-size: 12px; font-weight: 700;
   color: var(--oa-muted); white-space: nowrap; transition: all .15s;
+  text-align: center; min-height: 0; line-height: 1.2;
 }
 .obojima .oa-tab-btn:not(.active):hover { background: var(--oa-soft); }
 .obojima .oa-tab-btn.active { font-weight: 800; background: var(--oa-accent); color: #fff; }
@@ -356,6 +357,7 @@
 .obojima .oa-spell-level { font-family: var(--oa-hand); font-size: 18px; color: var(--oa-accent); }
 .obojima .oa-spell-slots { color: var(--oa-accent); }
 .obojima .oa-spell-list { display: flex; flex-wrap: wrap; align-items: baseline; }
+.obojima .oa-spell { padding: 0; min-height: 0; font-size: 13px; line-height: 1.5; text-align: left; color: var(--oa-ink); }
 .obojima .oa-spell.is-prepared { font-weight: 600; }
 .obojima .oa-prep { color: var(--oa-accent); margin-right: 2px; }
 .obojima .oa-flag { color: var(--oa-muted); }
@@ -383,6 +385,7 @@
 .obojima .oa-inv-attune { flex: 1; }
 .obojima .oa-col-title { font-family: var(--oa-hand); font-size: 19px; color: var(--oa-accent); margin-bottom: 4px; }
 .obojima .oa-attack-grid { display: grid; grid-template-columns: 1fr auto auto; gap: 4px 12px; font-size: 12px; line-height: 1.45; }
+.obojima .oa-attack-name { text-align: left; padding: 0; min-height: 0; font-size: 12px; line-height: 1.45; color: var(--oa-ink); }
 .obojima .oa-attack-head { font-size: 8.5px; color: var(--oa-muted); letter-spacing: .05em; }
 .obojima .oa-r { text-align: right; }
 .obojima .oa-muted { color: var(--oa-muted); }
@@ -427,6 +430,7 @@
 .obojima .oa-spirit-stats { font-size: 11.5px; margin-bottom: 6px; display: flex; flex-wrap: wrap; gap: 4px 8px; align-items: center; }
 .obojima .oa-spirit-stats label { display: inline-flex; align-items: center; gap: 3px; }
 .obojima .oa-spirit-ability { display: flex; align-items: center; gap: 6px; font-size: 11.5px; line-height: 1.5; padding: 1px 0; }
+.obojima .oa-spirit-ability-btn { text-align: left; padding: 0; min-height: 0; font-size: 12px; line-height: 1.4; }
 .obojima .oa-spirit-ability-btn b { color: var(--oa-ink); }
 .obojima .oa-spirit-quirk { font-size: 11px; color: var(--oa-muted); font-style: italic; margin-top: 6px; }
 .obojima .oa-spirit-quirk-edit { display: block; font-size: 10px; color: var(--oa-muted); margin-top: 6px; }

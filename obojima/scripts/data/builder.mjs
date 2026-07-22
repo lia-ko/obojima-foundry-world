@@ -10,7 +10,7 @@ import { ANCESTRIES } from "./ancestries.mjs";
 import { BACKGROUNDS } from "./backgrounds.mjs";
 import { FEATS } from "./feats.mjs";
 import { SKILLS, ABILITIES } from "../config.mjs";
-import { num } from "../helpers.mjs";
+import { num, SYSTEM_ID } from "../helpers.mjs";
 
 const ORD = { 0: "Cantrips", 1: "1st", 2: "2nd", 3: "3rd" };
 
@@ -417,8 +417,16 @@ async function promptAncestryASI(actor, a) {
 async function promptAncestryVariant(actor, a) {
   const v = a.variants;
   const idx = await chooseOption(`${a.label}: ${v.prompt}`, "Choose your variant:", v.options.map((o) => o.label));
-  const opt = v.options[idx ?? 0];
+  if (idx == null) return; // cancelled — don't silently default to the first option
+  const opt = v.options[idx];
   if (!opt) return;
+  // Switching variant: drop any other variant's talisman card so it doesn't linger.
+  const otherNames = v.options.filter((o) => o !== opt).map((o) => o.trait?.name).filter(Boolean);
+  if (otherNames.length) {
+    const cur = actor.system.features ?? [];
+    const pruned = cur.filter((f) => !otherNames.includes(f.name));
+    if (pruned.length !== cur.length) await actor.update({ "system.features": pruned });
+  }
   if (opt.speed != null) await actor.update({ "system.attributes.speed": opt.speed });
   if (opt.trait) await addTraitCards(actor, [opt.trait], a.label);
 }
@@ -438,14 +446,31 @@ async function promptOakaMark(actor, a) {
 export async function applyAncestry(actor) {
   const a = ANCESTRIES[actor.system.details?.ancestry];
   if (!a) { ui.notifications?.warn("Pick an ancestry first."); return; }
+  const key = actor.system.details?.ancestry;
+  const applied = actor.getFlag(SYSTEM_ID, "ancestryApplied");
+
+  // Speed, languages, and trait cards are safe to (re)apply — they dedupe.
   const upd = { "system.attributes.speed": a.speed };
   const langs = ["Common"];
   if (Array.isArray(a.languages)) langs.push(...a.languages);
   else if (a.languages) langs.push(`+${a.languages} of choice`);
   upd["system.proficiencies.languages"] = [...new Set([...(actor.system.proficiencies?.languages ?? "").split(", ").filter(Boolean), ...langs])].join(", ");
   await actor.update(upd);
-
   await addTraitCards(actor, a.traits ?? [], a.label);
+
+  // Ability increases and skill grants must apply ONCE — re-running would
+  // permanently stack (+2/+1 → +4/+2). Guard on a stored flag. On a repeat of
+  // the same ancestry, still let the player re-pick a variant (e.g. Dara colour),
+  // but never re-apply the scores.
+  if (applied === key) {
+    if (a.variants) await promptAncestryVariant(actor, a);
+    ui.notifications?.info(`${a.label} already applied — ability scores left unchanged.`);
+    return;
+  }
+  if (applied && applied !== key) {
+    ui.notifications?.warn(`Ancestry changed after a previous apply — earlier ability increases were not reverted; adjust scores manually if needed.`);
+  }
+
   await promptAncestryASI(actor, a);
   if (a.skills) {
     const chosen = await chooseSkills(Object.keys(SKILLS), a.skills, `${a.label}: choose ${a.skills} skills`);
@@ -454,6 +479,7 @@ export async function applyAncestry(actor) {
   }
   if (a.variants) await promptAncestryVariant(actor, a);
   if (a.oakaMark) await promptOakaMark(actor, a);
+  await actor.setFlag(SYSTEM_ID, "ancestryApplied", key);
   ui.notifications?.info(`${a.label} traits applied.`);
 }
 

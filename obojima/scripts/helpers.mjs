@@ -105,7 +105,9 @@ export function coreStats(actor) {
   return {
     ac: num(a.ac),
     hp: { value: hpVal, max: hpMax, temp: hpTemp },
-    hpPct: hpMax > 0 ? Math.max(0, Math.min(100, Math.round((hpVal / hpMax) * 100))) : 0,
+    // Both bar segments share the (max + temp) denominator so their widths, as
+    // flex siblings, can never sum past 100% and distort the fill.
+    hpPct: denom > 0 ? Math.max(0, Math.min(100, Math.round((hpVal / denom) * 100))) : 0,
     hpTempPct: denom > 0 ? Math.max(0, Math.min(100, Math.round((hpTemp / denom) * 100))) : 0,
     init: signed(a.init),
     speed: num(a.speed),

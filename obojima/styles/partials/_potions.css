@@ -26,6 +26,7 @@
 .obojima .oa-spirit-stats { font-size: 11.5px; margin-bottom: 6px; display: flex; flex-wrap: wrap; gap: 4px 8px; align-items: center; }
 .obojima .oa-spirit-stats label { display: inline-flex; align-items: center; gap: 3px; }
 .obojima .oa-spirit-ability { display: flex; align-items: center; gap: 6px; font-size: 11.5px; line-height: 1.5; padding: 1px 0; }
+.obojima .oa-spirit-ability-btn { text-align: left; padding: 0; min-height: 0; font-size: 12px; line-height: 1.4; }
 .obojima .oa-spirit-ability-btn b { color: var(--oa-ink); }
 .obojima .oa-spirit-quirk { font-size: 11px; color: var(--oa-muted); font-style: italic; margin-top: 6px; }
 .obojima .oa-spirit-quirk-edit { display: block; font-size: 10px; color: var(--oa-muted); margin-top: 6px; }
